@@ -1,1 +1,105 @@
-{%  extends "add_train.html" %}
+{% extends "header.html" %}
+{% block content %}
+<form action="/update_train/true" class="form-inline container" >
+        <div class="form-group col-lg-10 " style="margin-top: 50px;" >
+          	<input type="text" class="form-control" placeholder="Search">
+          	<button type="submit" class="btn btn-default">Submit</button>
+        </div>
+</form>
+
+{% if loaded %}
+	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 50px; margin-left: 25%; width:100%;">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Train</legend>
+                <div class="form-group">
+                    {{ form.trainName.label(class="form-control-label") }}
+
+                    {% if form.trainName.errors %}
+                        {{ form.trainName(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.trainName.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.trainName(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.trainID.label(class="form-control-label") }}
+                    {% if form.trainID.errors %}
+                        {{ form.trainID(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.trainID.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.trainID(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.starting.label(class="form-control-label") }}
+                    {% if form.starting.errors %}
+                        {{ form.starting(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.starting.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.starting(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.ending.label(class="form-control-label") }}
+                    {% if form.ending.errors %}
+                        {{ form.ending(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.ending.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.ending(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-check form-group">
+                    {{ form.sunday(class="form-check-input") }}
+                    {{ form.sunday.label(class="form-check-label") }}
+                    {{ form.monday(class="form-check-input ") }}
+                    {{ form.monday.label(class="form-check-label") }}
+                    {{ form.tuesday(class="form-check-input") }}
+                    {{ form.tuesday.label(class="form-check-label") }}
+                    {{ form.wednesday(class="form-check-input") }}
+                    {{ form.wednesday.label(class="form-check-label") }}
+                    {{ form.thursday(class="form-check-input") }}
+                    {{ form.thursday.label(class="form-check-label") }}
+                    {{ form.friday(class="form-check-input") }}
+                    {{ form.friday.label(class="form-check-label") }}
+                    {{ form.saturday(class="form-check-input") }}
+                    {{ form.saturday.label(class="form-check-label") }}
+                </div>
+                <div class="form-group">
+                    {{ form.coaches.label(class="form-control-label") }}
+                    {% if form.coaches.errors %}
+                        {{ form.coaches(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.coaches.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    	{{ form.coaches(class="form-control") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+{% endif %}
+{% endblock content %}
