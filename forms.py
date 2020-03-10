@@ -54,3 +54,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=15)])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class AdminLoginForm(FlaskForm):
+    employeeid = StringField('Employee Id',validators=[DataRequired(), Length(min=10)])
+    password = PasswordField('Password',validators=[DataRequired(),Length(min=5 ,max=15)])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')

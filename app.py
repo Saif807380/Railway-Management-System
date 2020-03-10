@@ -1,11 +1,11 @@
 from flask import Flask, render_template, url_for, flash, redirect
-from forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm
+from forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
-@app.route('/',methods=['GET', 'POST'])
+@app.route('/add_train',methods=['GET', 'POST'])
 def addTrain():
 	form = AddTrain()
 	return render_template('add_train.html',title="Add Train",form = form)
@@ -42,6 +42,16 @@ def login():
 		else:
 			flash('Invalid Credentials', 'danger')
 	return render_template('login.html', title= "Login", form=form)
+
+@app.route('/',methods=['GET' , 'POST'])
+def adminLogin():
+	form = AdminLoginForm()
+	if  form.validate_on_submit():
+		flash(f'Logged in successfully as {form.employeeid.data}!','success')
+		return redirect(url_for('addTrain'))
+	return render_template('admin_login.html', title= "Admin Login", form=form)
+
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
