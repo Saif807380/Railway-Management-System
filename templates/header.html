@@ -20,24 +20,26 @@
 		      	<a class="navbar-brand" href="#">Admin</a>
 		    </div>
 		    <div class="collapse navbar-collapse" id="navbar">
-		    	<ul class="nav navbar-nav navbar-right">
-		    		{% if title=='Add Train' %}
-				    	<li class="active"><a href="{{ url_for('addTrain') }}">Add Train</a></li>
-				    {% else %}
-				    	<li><a href="{{ url_for('addTrain') }}">Add Train</a></li>
-				    {% endif %}
-				    {% if title=='Update Train' %}
-				    	<li class="active"><a href="{{ url_for('update') }}">Update Train</a></li>
-				    {% else %}
-				    	<li><a href="{{ url_for('update') }}">Update Train</a></li>
-				    {% endif %}
-				    {% if title=='View Trains' %}
-				    	<li class="active"><a href="{{ url_for('view') }}">View Trains</a></li>
-				    {% else %}
-				    	<li><a href="{{ url_for('view') }}">View Trains</a></li>
-				    {% endif %}
-				    <li><a href="{{ url_for('adminLogin') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
-				</ul>
+		    	{% if title!='Admin Login' %}
+			    	<ul class="nav navbar-nav navbar-right">
+			    		{% if title=='Add Train' %}
+					    	<li class="active"><a href="{{ url_for('addTrain') }}">Add Train</a></li>
+					    {% else %}
+					    	<li><a href="{{ url_for('addTrain') }}">Add Train</a></li>
+					    {% endif %}
+					    {% if title=='Update Train' %}
+					    	<li class="active"><a href="{{ url_for('update') }}">Update Train</a></li>
+					    {% else %}
+					    	<li><a href="{{ url_for('update') }}">Update Train</a></li>
+					    {% endif %}
+					    {% if title=='View Trains' %}
+					    	<li class="active"><a href="{{ url_for('view') }}">View Trains</a></li>
+					    {% else %}
+					    	<li><a href="{{ url_for('view') }}">View Trains</a></li>
+					    {% endif %}
+					    <li><a href="{{ url_for('adminLogin') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+					</ul>
+				{% endif %}
 		    </div>
 	 	 </div>
 	</nav>
