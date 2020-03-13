@@ -8,7 +8,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route('/')
 @app.route('/home')
 def home():
-	return render_template('home.html')
+	return render_template('index.html')
 
 @app.route('/book_ticket')
 @login_required
@@ -68,7 +68,7 @@ def login():
 @app.route('/logout')
 def logout():
 	logout_user()
-	return redirect(url_for('login'))
+	return redirect(url_for('home'))
 
 
 

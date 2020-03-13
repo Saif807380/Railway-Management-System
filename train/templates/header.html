@@ -11,7 +11,7 @@
 
 <body>
 	<header class="site-header">
-		<nav class="navbar navbar-inverse navbar-fixed-top">
+		<nav class="navbar navbar-inverse navbar-light bg-light navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -19,7 +19,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">User</a>
+					<a class="navbar-brand" href="{{ url_for('home') }}"><img src="../static/assets/img/logo.png"
+						height="30 px"></a>
 				</div>
 				<div class="collapse navbar-collapse" id="navbar">
 
@@ -99,6 +100,7 @@
 			</div>
 		</nav>
 	</header>
+	
 	<main role="main" class="container">
 		<div class="row">
 			<div class="col-md-8">
