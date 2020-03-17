@@ -1,6 +1,6 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
-from train.models import Admin, User
+from train.models import Admin, User, Train
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -76,6 +76,14 @@ def logout():
 @app.route('/add_train',methods=['GET', 'POST'])
 def addTrain():
 	form = AddTrain()
+	print(form.errors)
+	if form.validate_on_submit():
+		train = Train(train_no = form.trainID.data,train_name = form.trainName.data,num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data)
+		print(form.monday.data,form.tuesday.data)
+		db.session.add(train)
+		db.session.commit()
+		flash('Your train has been added', 'success')
+		return redirect(url_for('view'))
 	return render_template('add_train.html',title="Add Train",form = form)
 
 @app.route('/update_train',methods=['GET', 'POST'])
@@ -90,7 +98,9 @@ def updateTrain(loaded):
 
 @app.route('/view')
 def view():
-	return render_template('view_train.html',title= "View Trains")
+	trains = Train.query.all()
+	print(trains)
+	return render_template('view_train.html',title= "View Trains",trains= trains)
 
 @app.route('/admin_login',methods=['GET' , 'POST'])
 def adminLogin():
