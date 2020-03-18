@@ -1,9 +1,9 @@
 {% extends "header.html" %}
 {% block content %}
-<form action="/update_train/true" class="form-inline container" >
+<form method="POST" action="/update_train/true" class="form-inline container" >
         <div class="form-group col-lg-10 " style="margin-top: 50px;" >
-          	<input type="text" class="form-control" placeholder="Search">
-          	<button type="submit" class="btn btn-default">Submit</button>
+          	<input name="train_no" type="text" class="form-control" placeholder="Search">
+          	<input type="submit" class="btn btn-default"></input>
         </div>
 </form>
 
@@ -24,7 +24,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.trainName(class="form-control form-control-lg") }}
+                        {{ form.trainName(class="form-control form-control-lg",value = train.train_name) }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -37,7 +37,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.trainID(class="form-control form-control-lg") }}
+                        {{ form.trainID(class="form-control form-control-lg",value=train.train_no) }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -50,7 +50,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.starting(class="form-control form-control-lg") }}
+                        {{ form.starting(class="form-control form-control-lg",value=train.source) }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -63,7 +63,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.ending(class="form-control form-control-lg") }}
+                        {{ form.ending(class="form-control form-control-lg",value=train.destination) }}
                     {% endif %}
                 </div>
                 <div class="form-check form-group">

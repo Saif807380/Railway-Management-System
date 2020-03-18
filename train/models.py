@@ -51,6 +51,13 @@ class Train(db.Model):
 	num_of_coaches = db.Column(db.Integer,nullable=False)
 	source = db.Column(db.String(20),nullable=False)
 	destination = db.Column(db.String(20),nullable=False)
+	monday = db.Column(db.Integer,nullable=False,default=0)
+	tuesday = db.Column(db.Integer,nullable=False,default=0)
+	wednesday = db.Column(db.Integer,nullable=False,default=0)
+	thursday = db.Column(db.Integer,nullable=False,default=0)
+	friday = db.Column(db.Integer,nullable=False,default=0)
+	saturday = db.Column(db.Integer,nullable=False,default=0)
+	sunday = db.Column(db.Integer,nullable=False,default=0)
 
 	def __repr__(self):
 		return f"Train('{self.train_no}', '{self.train_name}')"
@@ -63,18 +70,4 @@ class Station(db.Model):
 
 	def __repr__(self):
 		return f"Station('{self.station_id}', '{self.station_name}')"
-
-# class Days(db.Model):
-# 	train_id = db.Column(db.Integer,db.ForeignKey('Train'),primary_key=True)
-# 	monday = db.Column(db.Integer,nullable=False,default=0)
-# 	tuesday = db.Column(db.Integer,nullable=False,default=0)
-# 	wednesday = db.Column(db.Integer,nullable=False,default=0)
-# 	thursday = db.Column(db.Integer,nullable=False,default=0)
-# 	friday = db.Column(db.Integer,nullable=False,default=0)
-# 	saturday = db.Column(db.Integer,nullable=False,default=0)
-# 	sunday = db.Column(db.Integer,nullable=False,default=0)
-
-# 	def __repr__(self):
-# 		return f"Days"
-
 

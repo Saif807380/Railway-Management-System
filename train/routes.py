@@ -76,9 +76,18 @@ def logout():
 @app.route('/add_train',methods=['GET', 'POST'])
 def addTrain():
 	form = AddTrain()
-	print(form.errors)
 	if form.validate_on_submit():
-		train = Train(train_no = form.trainID.data,train_name = form.trainName.data,num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data)
+		days=['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+		running_days = list()
+		for day in days:
+			if form[day].data:
+				form[day].data = 1
+			else:
+				form[day].data = 0
+		train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
+					num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
+					monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
+					friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data)
 		print(form.monday.data,form.tuesday.data)
 		db.session.add(train)
 		db.session.commit()
@@ -89,18 +98,42 @@ def addTrain():
 @app.route('/update_train',methods=['GET', 'POST'])
 def update():
 	form = UpdateTrain()
-	return render_template('update_train.html',title="Update Train",form = form)
+	train = ""
+	return render_template('update_train.html',title="Update Train",form = form,train=train)
+
+
+train = ""
 
 @app.route('/update_train/<loaded>',methods=['GET', 'POST'])
 def updateTrain(loaded):
+	global train
 	form = UpdateTrain()
-	return render_template('update_train.html',title="Update Train",loaded=loaded, form = form)
+	try:
+		global train
+		train_no = request.form["train_no"]
+		train = Train.query.filter_by(train_no=train_no).first()
+		print(train_no)
+	except:
+		if form.validate_on_submit():
+			db.session.delete(train)
+			db.session.commit()
+			train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
+						num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
+						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
+						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data)
+			db.session.add(train)
+			db.session.commit()
+			flash('Your train has been updated', 'success')
+			return redirect(url_for('view'))
+	return render_template('update_train.html',title="Update Train",loaded=loaded, form = form, train=train)
 
 @app.route('/view')
 def view():
 	trains = Train.query.all()
-	print(trains)
-	return render_template('view_train.html',title= "View Trains",trains= trains)
+	if len(trains) > 0:
+		return render_template('view_train.html',title= "View Trains",trains= trains)
+	else:
+		return "no trains found"
 
 @app.route('/admin_login',methods=['GET' , 'POST'])
 def adminLogin():
