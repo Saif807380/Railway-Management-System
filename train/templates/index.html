@@ -31,33 +31,43 @@
 				<ul class="navbar-nav ml-auto">
 
 					{% if current_user.is_authenticated %}
-					
-					<li class="nav-item"><a  class="nav-link" href="{{ url_for('bookTicket') }}">Book Ticket</a></li>
-					
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
-					
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>
+						
+						<li class="nav-item"><a  class="nav-link" href="{{ url_for('bookTicket') }}">Book Ticket</a></li>
+						
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
+						
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
-					
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a>
-					</li>
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
+						
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a>
+						</li>
+
+					{% elif admin==1 %}
+						<li class="nav-item"><a  class="nav-link" href="{{ url_for('addTrain') }}">Add Trains</a></li>
+								
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('update') }}">Update Trains</a></li>
+						
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('view') }}">View Trains</a></li>
+
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('adminLogout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a>
+						</li>
 
 					{% else %}
 
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-					
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+						
+						<li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
 
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
-						<div class="dropdown-menu">
-						  <a class="dropdown-item" href="{{ url_for('adminLogin') }}">Admin Login</a>
-						  <a class="dropdown-item" href="#">Help</a>
-						  <div class="dropdown-divider"></div>
-						  <a class="dropdown-item" href="#">About Us</a>
-						</div>
-					  </li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
+							<div class="dropdown-menu">
+							<a class="dropdown-item" href="{{ url_for('adminLogin') }}">Admin Login</a>
+							<a class="dropdown-item" href="#">Help</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">About Us</a>
+							</div>
+						</li>
 				
 					{% endif %}
 
@@ -74,8 +84,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-9 mx-auto">
-					<h1 class="mb-5">NOW BOOK RAILWAY TICKETS AT LIGHTENING PACE</h1>
+					<h1 class="mb-5">NOW BOOK RAILWAY TICKETS AT LIGHTENING PACE </h1>
+					
 				</div>
+				{% if admin==0 %}
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('register') }}">
 						<div class="form-row justify-content-center">
@@ -85,6 +97,16 @@
 						</div>
 					</form>
 				</div>
+				{% else %}
+				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+					<form action="#">
+						<div class="form-row justify-content-center">
+							<div class="col-12 col-md-3"><button class="btn btn-primary btn-block btn-lg"
+									type="submit">Sign Up!</button></div>
+						</div>
+					</form>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</header>
@@ -134,6 +156,7 @@
 				<div class="col-xl-9 mx-auto">
 					<h2 class="mb-4">Ready to get started? Sign up now!</h2>
 				</div>
+				{% if admin==0 %}
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('register') }}">
 						<div class="form-row justify-content-center">
@@ -142,6 +165,16 @@
 						</div>
 					</form>
 				</div>
+				{% else %}
+				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+					<form action="#">
+						<div class="form-row justify-content-center">
+							<div class="col-12 col-md-3"><button class="btn btn-primary btn-block btn-lg"
+									type="submit">Sign Up!</button></div>
+						</div>
+					</form>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</section>
