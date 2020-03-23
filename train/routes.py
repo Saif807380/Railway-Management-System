@@ -1,7 +1,7 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from train.models import Admin, User, Train
-from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm
+from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm, BookTicket
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
 
@@ -10,14 +10,25 @@ adminLog = 0    #To check if admin is logged in or not
 def home():
 	return render_template('index.html',admin = adminLog)
 
-@app.route('/book_ticket')
+@app.route('/book_ticket',methods=['GET','POST'])
 @login_required
 def bookTicket():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	return render_template('book_ticket.html',title= "Book Ticket",admin = adminLog)
+	form =BookTicket()
+	if request.method=='POST':
+		source = request.form.get('source')
+		destination = request.form.get('destination')
+		date = request.form.get('date')
+		tier = request.form.get('tier')
+		return redirect(url_for('availableTrain' , date = date ,  source = source , destination = destination, tier = tier))
+	else:
+		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)
 
+
+
+      
 
 @app.route('/train_status')
 @login_required
@@ -203,3 +214,16 @@ def adminLogout():
 	global adminLog
 	adminLog = 0
 	return redirect(url_for('home'))
+
+@app.route('/book_ticket/available_train',methods=['GET','POST'])
+@login_required
+def availableTrain():
+	global adminLog
+	if adminLog == 1:
+		adminLog = 0
+	trains = Train.query.all()
+	date = request.args.get('date', None)
+	source = request.args.get('source', None)
+	destination = request.args.get('destination', None)
+	tier = request.args.get('tier', None)
+	return render_template('available_trains.html' , date = date ,  source = source , destination = destination, tier = tier, trains=trains)

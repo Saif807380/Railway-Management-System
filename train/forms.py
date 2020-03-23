@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Required, ValidationError
 from train.models import User
 
@@ -70,3 +70,12 @@ class AdminLoginForm(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired(),Length(min=5 ,max=15)])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class BookTicket(FlaskForm):
+    source =  StringField('Source', validators=[DataRequired()])
+    destination =  StringField('Destination', validators=[DataRequired()])
+    date = DateField('Date',format='%d%m/%Y', validators=[DataRequired()])
+    
+    tier = SelectField('Tier',choices = [('1A','AC First Class(1A)'),('2A','AC 2 Tier(2A)'),('3A','AC 3 Tier(3A)')],validators = [Required()])
+
+    submit = SubmitField('Find All Trains')
