@@ -1,7 +1,7 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from train.models import Admin, User, Train
-from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm, BookTicket
+from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
 
@@ -28,8 +28,6 @@ def bookTicket():
 
 
 
-      
-
 @app.route('/train_status')
 @login_required
 def trainStatus():
@@ -37,15 +35,13 @@ def trainStatus():
 	if adminLog == 1:
 		adminLog = 0
 	return render_template('train_status.html',title= "Train Status",admin = adminLog)
-
-
-@app.route('/cancel_booking')
+@app.route('/cancel_booking', methods=['GET', 'POST'])
 @login_required
 def cancelBooking():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
-	return render_template('cancel_booking.html',title= "Cancel Booking",admin = adminLog)
+	form =CancelBookingForm()
+	if form.validate_on_submit():
+		return redirect(url_for('home'))
+	return render_template('cancel_booking.html',title= "Cancel Booking",form=form)
 
 
 @app.route('/account')

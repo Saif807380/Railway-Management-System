@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Required, ValidationError
 from train.models import User
 
@@ -71,11 +71,16 @@ class AdminLoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+class CancelBookingForm(FlaskForm):
+    pnrNo = StringField('PNR No',validators=[DataRequired(),Length(min=10,max=10)])
+    submit = SubmitField('Next')
+
 class BookTicket(FlaskForm):
-    source =  StringField('Source', validators=[DataRequired()])
-    destination =  StringField('Destination', validators=[DataRequired()])
+    source = SelectField('Select source station',choices = [('Ahmedabad','Ahmedabad'),('Chennai','Chennai'),('Delhi','Delhi'),('Kolkata','Kolkata'),('Mumbai CSMT','Mumbai CSMT'),('Nagpur','Nagpur')],validators = [Required()])  
+    destination =  SelectField('Select destination',choices = [('Ahmedabad','Ahmedabad'),('Chennai','Chennai'),('Delhi','Delhi'),('Kolkata','Kolkata'),('Mumbai CSMT','Mumbai CSMT'),('Nagpur','Nagpur')],validators = [Required()])
     date = DateField('Date',format='%d%m/%Y', validators=[DataRequired()])
     
-    tier = SelectField('Tier',choices = [('1A','AC First Class(1A)'),('2A','AC 2 Tier(2A)'),('3A','AC 3 Tier(3A)')],validators = [Required()])
+    tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
 
     submit = SubmitField('Find All Trains')
+

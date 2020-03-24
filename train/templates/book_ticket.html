@@ -1,84 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Book Ticket</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
-    <link rel="stylesheet" href="/assets/css/styles.min.css?h=c7c315355d5e188d4864ab63d7dc257b">
-</head>
-
-<body style="background-image: url(../static/indianrailways2.jpg);background-position: centre;background-size: cover;background-repeat: no-repeat;">
-	
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark stick-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="{{ url_for('home') }}"><img src="../static/assets/img/logo.png"
-					height="30 px"></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
-
-					{% if current_user.is_authenticated %}
-						
-						<li class="nav-item"><a  class="nav-link" href="{{ url_for('bookTicket') }}">Book Ticket</a></li>
-						
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
-						
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>
-
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
-						
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a>
-						</li>
-
-					{% elif admin==1 %}
-						<li class="nav-item"><a  class="nav-link" href="{{ url_for('addTrain') }}">Add Trains</a></li>
-								
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('update') }}">Update Trains</a></li>
-						
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('view') }}">View Trains</a></li>
-
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('adminLogout') }}">Logout <span class="glyphicon glyphicon-log-out"></span></a>
-						</li>
-
-					{% else %}
-
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-						
-						<li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
-							<div class="dropdown-menu">
-							<a class="dropdown-item" href="{{ url_for('adminLogin') }}">Admin Login</a>
-							<a class="dropdown-item" href="#">Help</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">About Us</a>
-							</div>
-						</li>
-				
-					{% endif %}
-
-				</ul>
-			</div>
-		</div>
-	</nav>
-	
-	<div id="form1" style="margin-right: 800px;margin-left: 100px;margin-top: 50px;margin-bottom: 50px;">
-        <!-- Start: Bootstrap Form With Validation -->
-        <form class="bootstrap-form-with-validation" style="background-color: #ffffff;padding: 20px;" method="POST" action="#">
-            <h2 class="text-center" style="font-size: 70px;">BOOK&nbsp;</h2>
-            <h2 class="text-center" style="font-size: 30px;">YOUR TICKET&nbsp;</h2>
-            <h2 class="text-center" style="font-size: 30px;"><i class="material-icons" style="font-size: 50px;">train</i>&nbsp;</h2>
-		   
-			
-
-			<div class="form-group">
+{% extends "header.html" %}
+{% block content %}
+	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; margin-left:25%;width:100%;">
+        <form method="POST" action="">
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Book Ticket</legend>
+               		<div class="form-group">
 				{{ form.source.label(class="form-control-label") }}
 				{% if form.source.errors %}
 					{{ form.source(class="form-control form-control-lg is-invalid") }}
@@ -88,15 +16,9 @@
 						{% endfor %}
 					</div>
 				{% else %}
-					<!-- <div class="form-group"><input class="form-control" type="text" id="text-input" name="text-input" placeholder="From*" autocomplete="on" required=""></div> -->
 					{{ form.source(class="form-control form-control-lg") }}
 				{% endif %}
 			</div>
-
-			<div class="form-group"><i class="fas fa-exchange-alt d-sm-flex" style="background-position: center;font-size: 20px;margin-left: 50%;"></i></div>
-			
-
-
 
 			<div class="form-group">
 				{{ form.destination.label(class="form-control-label") }}
@@ -108,15 +30,12 @@
 						{% endfor %}
 					</div>
 				{% else %}
-					<!-- <div class="form-group"><input class="form-control" type="text" id="text-input-1" name="text-input" placeholder="To*" required="" ></div> -->
 					{{ form.destination(class="form-control form-control-lg") }}
 
 				{% endif %}
 			</div>
 
-
-
-			<div class="form-group">
+                	<div class="form-group">
 				{{ form.date.label(class="form-control-label") }}
 				{% if form.date.errors %}
 					{{ form.date(class="form-control form-control-lg is-invalid") }}
@@ -131,18 +50,7 @@
 				{% endif %}
 			</div>
 
-			
-			
-			<!-- <div class="form-group">
-                <select class="form-control">
-					<option>All Clases</option>
-					<option>AC First Class(1A)</option>
-					<option>AC 2 Tier(2A)</option>
-					<option>AC 3 Tier(3A)</option>
-				  </select>
-            </div> -->
-
-			<div class="form-group">
+                	<div class="form-group">
 				{{ form.tier.label(class="form-control-label") }}
 				{% if form.tier.errors %}
 					{{ form.tier(class="form-control is-invalid") }}
@@ -155,18 +63,11 @@
 					{{ form.tier(class="form-control") }}
 				{% endif %}
 			</div>
-
-			
+               
+            </fieldset>
             <div class="form-group">
-               <input class="btn btn-primary text-center border rounded" type="submit" style="width: 100%;" value="Find All Trains">
-			</div>
-			
-			
+                {{ form.submit(class="btn btn-success") }}
+            </div>
         </form>
-        <!-- End: Bootstrap Form With Validation -->
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock content %}
