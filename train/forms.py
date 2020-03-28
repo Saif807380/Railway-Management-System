@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Required, ValidationError
-from train.models import User
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,DateField,IntegerField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, Required, ValidationError
+from train.models import User,Train
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from train import db
 
 class AddTrain(FlaskForm):
     trainName = StringField('Train Name',
@@ -75,12 +77,20 @@ class CancelBookingForm(FlaskForm):
     pnrNo = StringField('PNR No',validators=[DataRequired(),Length(min=10,max=10)])
     submit = SubmitField('Next')
 
-class BookTicket(FlaskForm):
-    source = SelectField('Select Source',choices = [('Ahmedabad','Ahmedabad'),('Chennai','Chennai'),('Delhi','Delhi'),('Kolkata','Kolkata'),('Mumbai CSMT','Mumbai CSMT'),('Nagpur','Nagpur')],validators = [Required()])  
-    destination =  SelectField('Select Destination',choices = [('Ahmedabad','Ahmedabad'),('Chennai','Chennai'),('Delhi','Delhi'),('Kolkata','Kolkata'),('Mumbai CSMT','Mumbai CSMT'),('Nagpur','Nagpur')],validators = [Required()])
-    date = DateField('Date',format='%d/%m/%Y', validators=[DataRequired()])
-    
-    tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
+def source_station_choices():      
+    return db.session.query(Train).group_by(Train.source).all()
 
+def destination_station_choices():      
+    return db.session.query(Train).group_by(Train.destination).all()
+
+class BookTicket(FlaskForm):
+    source = QuerySelectField('Select source station',query_factory=source_station_choices, get_label='source')  
+    destination = QuerySelectField('Select destination',query_factory=destination_station_choices, get_label='destination')
+    date = DateField('Date',format='%d/%m/%Y', validators=[DataRequired()])
+    tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
     submit = SubmitField('Find All Trains')
 
+class AddPassengers(FlaskForm):
+    p_name = StringField('Username',validators=[DataRequired()])
+    p_age = IntegerField('Age', validators=[NumberRange(min=1, max=2), Required()] )
+    p_contact = IntegerField('Contact No', validators=[NumberRange(min=0, max=10), Required()])
