@@ -1,7 +1,7 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from train.models import Admin, User, Train
-from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket
+from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket, AddPassengers
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
 
@@ -18,14 +18,41 @@ def bookTicket():
 		adminLog = 0
 	form =BookTicket()
 	if request.method=='POST':
-		source = request.form.get('source')
-		destination = request.form.get('destination')
-		date = request.form.get('date')
-		tier = request.form.get('tier')
+		source=(form.source.data).source
+		destination=(form.destination.data).destination
+		date=form.date.data
+		tier=form.tier.data
 		return redirect(url_for('availableTrain' , date = date ,  source = source , destination = destination, tier = tier))
 	else:
 		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)
 
+
+@app.route('/book_ticket/available_train',methods=['GET','POST'])
+@login_required
+def availableTrain():
+	global adminLog
+	if adminLog == 1:
+		adminLog = 0
+	trains= Train.query.all()
+	date = request.args.get('date')
+	source = request.args.get('source')
+	destination = request.args.get('destination')
+	tier = request.args.get('tier')	
+	selected_trains = [train for train in Train.query.filter_by(source=source, destination=destination)]
+	if request.method=='POST':
+		train_no = request.form['select_train']
+		return redirect(url_for('addPassengers', train_no=train_no))
+	return render_template('available_trains.html', date = date,  source = source, destination = destination, tier=tier, selected_trains=selected_trains)
+
+
+@app.route('/book_ticket/add_passengers')
+@login_required
+def addPassengers():
+	train_no = request.args.get('train_no')
+	form = AddPassengers()
+	if form.validate_on_submit():
+		return redirect()
+	return render_template('add_passengers.html')
 
 
 @app.route('/train_status')
@@ -210,16 +237,3 @@ def adminLogout():
 	global adminLog
 	adminLog = 0
 	return redirect(url_for('home'))
-
-@app.route('/book_ticket/available_train',methods=['GET','POST'])
-@login_required
-def availableTrain():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
-	trains = Train.query.all()
-	date = request.args.get('date', None)
-	source = request.args.get('source', None)
-	destination = request.args.get('destination', None)
-	tier = request.args.get('tier', None)
-	return render_template('available_trains.html' , date = date ,  source = source , destination = destination, tier = tier, trains=trains)
