@@ -1,6 +1,6 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
-from train.models import Admin, User, Train
+from train.models import Admin, User, Train, Passenger
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket, AddPassengers
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
@@ -41,19 +41,44 @@ def availableTrain():
 	selected_trains = [train for train in Train.query.filter_by(source=source, destination=destination)]
 	if request.method=='POST':
 		train_no = request.form['select_train']
-		return redirect(url_for('addPassengers', train_no=train_no))
+		return redirect(url_for('addPassenger', train_no=train_no))
 	return render_template('available_trains.html', date = date,  source = source, destination = destination, tier=tier, selected_trains=selected_trains)
 
 
 @app.route('/book_ticket/add_passengers')
 @login_required
-def addPassengers():
-	train_no = request.args.get('train_no')
-	form = AddPassengers()
-	if form.validate_on_submit():
-		return redirect()
-	return render_template('add_passengers.html')
+def addPassenger():
+	forms=[]
+	passengers = 0
+	return render_template('add_passengers.html',title="Add Passengers",forms = forms,passengers=passengers,admin = adminLog)
 
+passengers = 0
+
+@app.route('/book_ticket/add_passengers/<loaded>',methods=['GET', 'POST'])
+def addPassengers(loaded):
+	global passengers
+	forms=[]
+	if request.method == 'POST':
+		print("INN")
+		if 'passengers' in request.form: 
+			print("Hey")           
+			global passengers		
+			passengers = request.form["passengers"]
+			forms = [AddPassengers() for i in range(int(passengers))]
+
+		elif 'addp' in request.form:
+			print("Hello")
+			for form in forms:
+				if form.validate:
+					name=form.name.data
+					age= form.age.data
+					passenger = Passenger(name =form.name.data, age= form.age.data, user_id=current_user.id )
+					db.session.add(passenger)
+			db.session.commit()
+			return redirect(url_for('home'))
+	return render_template('add_passengers.html', loaded=loaded, forms=forms)
+
+				
 
 @app.route('/train_status')
 @login_required

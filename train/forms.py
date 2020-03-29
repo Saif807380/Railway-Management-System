@@ -91,6 +91,5 @@ class BookTicket(FlaskForm):
     submit = SubmitField('Find All Trains')
 
 class AddPassengers(FlaskForm):
-    p_name = StringField('Username',validators=[DataRequired()])
-    p_age = IntegerField('Age', validators=[NumberRange(min=1, max=2), Required()] )
-    p_contact = IntegerField('Contact No', validators=[NumberRange(min=0, max=10), Required()])
+    name = StringField('Passenger Name',validators=[DataRequired()])
+    age = IntegerField('Age', validators=[NumberRange(min=1, max=2), Required()] )
