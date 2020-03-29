@@ -33,7 +33,6 @@ def availableTrain():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	trains= Train.query.all()
 	date = request.args.get('date')
 	source = request.args.get('source')
 	destination = request.args.get('destination')
@@ -45,9 +44,12 @@ def availableTrain():
 	return render_template('available_trains.html', date = date,  source = source, destination = destination, tier=tier, selected_trains=selected_trains)
 
 
-@app.route('/book_ticket/add_passengers')
+@app.route('/book_ticket/add_passengers', methods=['GET','POST'])
 @login_required
 def addPassenger():
+	global adminLog
+	if adminLog == 1:
+		adminLog = 0
 	forms=[]
 	passengers = 0
 	return render_template('add_passengers.html',title="Add Passengers",forms = forms,passengers=passengers,admin = adminLog)
@@ -68,12 +70,12 @@ def addPassengers(loaded):
 
 		elif 'addp' in request.form:
 			print("Hello")
-			for form in forms:
-				if form.validate:
-					name=form.name.data
-					age= form.age.data
-					passenger = Passenger(name =form.name.data, age= form.age.data, user_id=current_user.id )
-					db.session.add(passenger)
+			for form in request.form:
+				print(form , request.form[form])
+			form = request.form				
+			# removed loop as request.form contains only 1 element	
+			passenger = Passenger(name =form['name'], age= form['age'], user_id=current_user.id )
+			db.session.add(passenger)
 			db.session.commit()
 			return redirect(url_for('home'))
 	return render_template('add_passengers.html', loaded=loaded, forms=forms)
@@ -150,7 +152,6 @@ def addTrain():
 		form = AddTrain()
 		if form.validate_on_submit():
 			days=['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-			running_days = list()
 			for day in days:
 				if form[day].data:
 					form[day].data = 1
