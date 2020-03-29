@@ -1,7 +1,7 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from train.models import Admin, User, Train, Passenger
-from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket, AddPassengers
+from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket, AddPassengers , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
 
@@ -98,13 +98,23 @@ def cancelBooking():
 	return render_template('cancel_booking.html',title= "Cancel Booking",form=form)
 
 
-@app.route('/account')
+@app.route('/account' , methods=['GET', 'POST'])
 @login_required
 def account():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	return render_template('account.html', title= "Account",admin = adminLog)
+	form = UpdateAccountForm()
+	if form.validate_on_submit():
+		current_user.username = form.username.data
+		current_user.email = form.email.data
+		db.session.commit()
+		flash('Your account has been updated!', 'success')
+		return redirect(url_for('account'))
+	elif request.method == 'GET':
+		form.username.data = current_user.username
+		form.email.data = current_user.email
+	return render_template('account.html' , title = "Account" , admin = adminLog , form = form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
