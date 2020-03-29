@@ -112,7 +112,3 @@ class BookTicket(FlaskForm):
     date = DateField('Date',format='%d/%m/%Y', validators=[DataRequired()])
     tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
     submit = SubmitField('Find All Trains')
-
-class AddPassengers(FlaskForm):
-    name = StringField('Passenger Name',validators=[DataRequired()])
-    age = IntegerField('Age', validators=[NumberRange(min=1, max=2), Required()] )

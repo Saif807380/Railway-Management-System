@@ -1,7 +1,7 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from train.models import Admin, User, Train, Passenger
-from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket, AddPassengers , UpdateAccountForm
+from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
 
@@ -50,35 +50,64 @@ def addPassenger():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	forms=[]
 	passengers = 0
-	return render_template('add_passengers.html',title="Add Passengers",forms = forms,passengers=passengers,admin = adminLog)
+	return render_template('add_passengers.html',title="Add Passengers",passengers=passengers,admin = adminLog)
 
 passengers = 0
 
 @app.route('/book_ticket/add_passengers/<loaded>',methods=['GET', 'POST'])
 def addPassengers(loaded):
 	global passengers
-	forms=[]
 	if request.method == 'POST':
 		print("INN")
 		if 'passengers' in request.form: 
-			print("Hey")           
+			print("Hey")   
 			global passengers		
 			passengers = request.form["passengers"]
-			forms = [AddPassengers() for i in range(int(passengers))]
 
 		elif 'addp' in request.form:
-			print("Hello")
-			for form in request.form:
-				print(form , request.form[form])
-			form = request.form				
-			# removed loop as request.form contains only 1 element	
-			passenger = Passenger(name =form['name'], age= form['age'], user_id=current_user.id )
-			db.session.add(passenger)
+			print("Hello")			
+			form = request.form	
+			if passengers=='1':
+				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )
+				db.session.add(passenger1)
+			elif passengers=='2':
+				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
+				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
+				db.session.add(passenger1)
+				db.session.add(passenger2)
+			elif passengers=='3':
+				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
+				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )				
+				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )
+				db.session.add(passenger1)
+				db.session.add(passenger2)
+				db.session.add(passenger3)
+			elif passengers=='4':
+				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
+				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
+				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )				
+				passenger4 = Passenger(name =form["name4"], age= form["age4"], user_id=current_user.id )
+				db.session.add(passenger1)
+				db.session.add(passenger2)
+				db.session.add(passenger3)
+				db.session.add(passenger4)
+			elif passengers=='5':
+				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
+				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
+				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )				
+				passenger4 = Passenger(name =form["name4"], age= form["age4"], user_id=current_user.id )								
+				passenger5 = Passenger(name =form["name5"], age= form["age5"], user_id=current_user.id )
+				db.session.add(passenger1)
+				db.session.add(passenger2)
+				db.session.add(passenger3)
+				db.session.add(passenger4)
+				db.session.add(passenger5)
+			else:
+				print("Nothing")
 			db.session.commit()
-			return redirect(url_for('home'))
-	return render_template('add_passengers.html', loaded=loaded, forms=forms)
+			return redirect(url_for('home'))	
+	return render_template('add_passengers.html', loaded=loaded, passengers=int(passengers))
 
 				
 

@@ -13,49 +13,24 @@
     style="background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 50px; margin-left: 25%; width:100%;">
     <form method="POST" action="/book_ticket/add_passengers/true">
         <legend class="border-bottom mb-4">Add Passengers</legend>
-       
-        {% for form in forms %}
-        
-        {{ form.hidden_tag() }}
-        
+        {% for i in range(passengers) %}
         <legend style="font-size: 16px; margin-left: auto;margin-right: auto; width:80%;">Passenger No. {{ loop.index }}</legend>
         <fieldset class="form-group" style="background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 1px; margin-top: 10px; margin-bottom: 40px; margin-left: auto;margin-right: auto; width:80%;">
+        
             <div class="form-group">
-                {{ form.name.label(class="form-control-label") }}
-                
-                {% if form.name.errors %}
-                {{ form.name(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.name.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.name(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-            
-            <div class="form-group">
-                {{ form.age.label(class="form-control-label") }}
-
-                {% if form.age.errors %}
-                {{ form.age(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.name.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.age(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-
+            <label for="name1">Name</label>
+            <input type="text" name="name{{ loop.index }}" class="form-control" id="name1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Age</label>
+            <input type="text" name="age{{ loop.index }}" class="form-control" id="exampleInputEmail1">
+        </div>
         </fieldset>
         {% endfor %}
         <div class="form-group">
             <input type="submit" name="addp" value="Book Ticket" class="btn btn-success">
         </div>
-            
+
     </form>
 </div>
 {% endif %}
