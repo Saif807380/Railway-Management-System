@@ -68,43 +68,9 @@ def addPassengers(loaded):
 		elif 'addp' in request.form:
 			print("Hello")			
 			form = request.form	
-			if passengers=='1':
-				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )
-				db.session.add(passenger1)
-			elif passengers=='2':
-				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
-				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
-				db.session.add(passenger1)
-				db.session.add(passenger2)
-			elif passengers=='3':
-				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
-				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )				
-				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )
-				db.session.add(passenger1)
-				db.session.add(passenger2)
-				db.session.add(passenger3)
-			elif passengers=='4':
-				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
-				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
-				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )				
-				passenger4 = Passenger(name =form["name4"], age= form["age4"], user_id=current_user.id )
-				db.session.add(passenger1)
-				db.session.add(passenger2)
-				db.session.add(passenger3)
-				db.session.add(passenger4)
-			elif passengers=='5':
-				passenger1 = Passenger(name =form["name1"], age= form["age1"], user_id=current_user.id )				
-				passenger2 = Passenger(name =form["name2"], age= form["age2"], user_id=current_user.id )
-				passenger3 = Passenger(name =form["name3"], age= form["age3"], user_id=current_user.id )				
-				passenger4 = Passenger(name =form["name4"], age= form["age4"], user_id=current_user.id )								
-				passenger5 = Passenger(name =form["name5"], age= form["age5"], user_id=current_user.id )
-				db.session.add(passenger1)
-				db.session.add(passenger2)
-				db.session.add(passenger3)
-				db.session.add(passenger4)
-				db.session.add(passenger5)
-			else:
-				print("Nothing")
+			for i in range(int(passengers)):
+				passenger = Passenger(name =form[f"name{i+1}"], age= form[f"age{i+1}"], user_id=current_user.id )
+				db.session.add(passenger)
 			db.session.commit()
 			return redirect(url_for('home'))	
 	return render_template('add_passengers.html', loaded=loaded, passengers=int(passengers))
