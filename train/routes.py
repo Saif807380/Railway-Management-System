@@ -40,7 +40,7 @@ def availableTrain():
 	selected_trains = [train for train in Train.query.filter_by(source=source, destination=destination)]
 	if request.method=='POST':
 		train_no = request.form['select_train']
-		return redirect(url_for('addPassenger', train_no=train_no))
+		return redirect(url_for('addPassenger', train_no=train_no))		
 	return render_template('available_trains.html', date = date,  source = source, destination = destination, tier=tier, selected_trains=selected_trains)
 
 
@@ -52,6 +52,7 @@ def addPassenger():
 		adminLog = 0
 	passengers = 0
 	return render_template('add_passengers.html',title="Add Passengers",passengers=passengers,admin = adminLog)
+	
 
 passengers = 0
 
@@ -84,6 +85,7 @@ def trainStatus():
 	if adminLog == 1:
 		adminLog = 0
 	return render_template('train_status.html',title= "Train Status",admin = adminLog)
+
 @app.route('/cancel_booking', methods=['GET', 'POST'])
 @login_required
 def cancelBooking():
@@ -92,6 +94,10 @@ def cancelBooking():
 		return redirect(url_for('home'))
 	return render_template('cancel_booking.html',title= "Cancel Booking",form=form)
 
+@app.route('/fare', methods=['GET', 'POST'])
+@login_required
+def fare():
+	return render_template('fare.html',title= "Fare Chart")
 
 @app.route('/account' , methods=['GET', 'POST'])
 @login_required
