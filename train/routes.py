@@ -1,5 +1,5 @@
 from train import app, db, bcrypt
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, session
 from train.models import Admin, User, Train, Passenger
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
@@ -18,11 +18,12 @@ def bookTicket():
 		adminLog = 0
 	form =BookTicket()
 	if request.method=='POST':
-		source=(form.source.data).source
-		destination=(form.destination.data).destination
-		date=form.date.data
-		tier=form.tier.data
-		return redirect(url_for('availableTrain' , date = date ,  source = source , destination = destination, tier = tier))
+		session["source"] = (form.source.data).source
+		session["destination"]=(form.destination.data).destination
+		session["date"]=form.date.data
+		session["tier"]=form.tier.data
+		print(session["source"],session["date"])
+		return redirect(url_for('availableTrain'))
 	else:
 		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)
 
@@ -33,15 +34,12 @@ def availableTrain():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	date = request.args.get('date')
-	source = request.args.get('source')
-	destination = request.args.get('destination')
-	tier = request.args.get('tier')	
-	selected_trains = [train for train in Train.query.filter_by(source=source, destination=destination)]
+	print(session["source"],session["destination"])
+	selected_trains = [train for train in Train.query.filter_by(source = session["source"], destination=session["destination"])]
 	if request.method=='POST':
-		train_no = request.form['select_train']
-		return redirect(url_for('addPassenger', train_no=train_no))		
-	return render_template('available_trains.html', date = date,  source = source, destination = destination, tier=tier, selected_trains=selected_trains)
+		session["train_no"] = request.form['select_train']
+		return redirect(url_for('addPassenger'))		
+	return render_template('available_trains.html', selected_trains=selected_trains,source = session['source'],destination=session['destination'])
 
 
 @app.route('/book_ticket/add_passengers', methods=['GET','POST'])
@@ -50,34 +48,20 @@ def addPassenger():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	passengers = 0
-	return render_template('add_passengers.html',title="Add Passengers",passengers=passengers,admin = adminLog)
-	
-
-passengers = 0
-
-@app.route('/book_ticket/add_passengers/<loaded>',methods=['GET', 'POST'])
-def addPassengers(loaded):
-	global passengers
-	if request.method == 'POST':
-		print("INN")
-		if 'passengers' in request.form: 
-			print("Hey")   
-			global passengers		
-			passengers = request.form["passengers"]
-
-		elif 'addp' in request.form:
-			print("Hello")			
+	if request.method == "POST":
+		if 'passengers' in request.form:
+			session["passengers"] = int(request.form["passengers"])
+			return render_template('add_passengers.html',title="Add Passengers",passengers=session["passengers"],admin = adminLog,loaded=True)
+		elif 'addp' in request.form:		
 			form = request.form	
-			for i in range(int(passengers)):
-				passenger = Passenger(name =form[f"name{i+1}"], age= form[f"age{i+1}"], user_id=current_user.id )
+			print(session['source'],session['destination'])
+			for i in range(session['passengers']):
+				passenger = Passenger(name =form[f"name{i+1}"], age= form[f"age{i+1}"], user_id=current_user.id,source=session['source'],destination=session['destination'],tier=session['tier'],train_no=session['train_no'],date=session['date'])
 				db.session.add(passenger)
 			db.session.commit()
-			return redirect(url_for('home'))	
-	return render_template('add_passengers.html', loaded=loaded, passengers=int(passengers))
-
-				
-
+			return redirect(url_for('home'))
+	return render_template('add_passengers.html',title="Add Passengers",passengers=0,admin = adminLog,loaded=False)
+	
 @app.route('/train_status')
 @login_required
 def trainStatus():

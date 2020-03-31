@@ -29,6 +29,11 @@ class Passenger(db.Model):
 	name = db.Column(db.String(20),nullable=False)
 	age = db.Column(db.Integer,nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+	source = db.Column(db.String(20),nullable=False)
+	destination = db.Column(db.String(20),nullable=False)
+	tier = db.Column(db.String(20),nullable=False)
+	date = db.Column(db.Date())
+	train_no = db.Column(db.String(20),nullable=False)
 	ticket = db.relationship('Ticket',backref='passenger',lazy=True,uselist=False)  #uselist=False implies one-to-one relationship
 	def __repr__(self):
 		return f"Passenger('{self.pass_id}','{self.name}','{self.age}','{self.user_id}')"
@@ -37,11 +42,11 @@ class Ticket(db.Model):
 	pnr_number = db.Column(db.String(10),primary_key=True)
 	destination = db.Column(db.String(20),nullable=False)
 	source = db.Column(db.String(20),nullable=False)
-	journey_date = db.Column(db.DateTime,nullable=False)
+	journey_date = db.Column(db.Date(),nullable=False)
 	seat_no = db.Column(db.Integer,unique=True,nullable=False)
 	pass_id = db.Column(db.Integer,db.ForeignKey('passenger.pass_id'),nullable=False)
 	train_no = db.Column(db.Integer,db.ForeignKey('train.train_no'),nullable=False)
-
+	tier = db.Column(db.String(20),nullable=False)
 	def __repr__(self):
 		return f"Ticket('{self.pnr_number}', '{self.source}', '{self.destination}', '{self.journey_date}', '{self.train_no}', '{self.seat_no}', '{self.pass_id}')"
 
