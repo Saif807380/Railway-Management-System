@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 {% block content %}
 
-	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; margin-left:25%;width:100%;">
+	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; width:150%;">
 
 		<table class="table table-striped table-dark">
 		  <thead class="thead-dark">
@@ -12,6 +12,14 @@
 		      <th scope="col" style="text-align: center;">Ending Station</th>
 		      <th scope="col" style="text-align: center;">Number of Coaches</th>
 		      <th scope="col" style="text-align: center;">Running Days</th>
+		      <th scope="col" style="text-align: center;">AC First Class Seats</th>
+		      <th scope="col" style="text-align: center;">AC Two Tier Seats</th>
+		      <th scope="col" style="text-align: center;">AC Three Tier Seats</th>
+		      <th scope="col" style="text-align: center;">Sleeper Class Seats</th>
+		      <th scope="col" style="text-align: center;">AC First Class Fare</th>
+		      <th scope="col" style="text-align: center;">AC Two Tier Fare</th>
+		      <th scope="col" style="text-align: center;">AC Three Tier Fare</th>
+		      <th scope="col" style="text-align: center;">Sleeper Class Fare</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -33,6 +41,14 @@
 			      			{{ day }},
 			      		{% endfor %}
 			      	</td>
+			      	<td style="text-align: center;">{{ train.ac_first_class_seats }}</td>
+			      	<td style="text-align: center;">{{ train.ac_two_tier_seats }}</td>
+			      	<td style="text-align: center;">{{ train.ac_three_tier_seats }}</td>
+			      	<td style="text-align: center;">{{ train.sleeper_class_seats }}</td>
+			      	<td style="text-align: center;">{{ train.ac_first_class_fare }}</td>
+			      	<td style="text-align: center;">{{ train.ac_two_tier_fare }}</td>
+			      	<td style="text-align: center;">{{ train.ac_three_tier_fare }}</td>
+			      	<td style="text-align: center;">{{ train.sleeper_class_fare }}</td>
 		    	</tr>
 
 		  	{% endfor %}

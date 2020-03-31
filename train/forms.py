@@ -7,14 +7,10 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from train import db
 
 class AddTrain(FlaskForm):
-    trainName = StringField('Train Name',
-                           validators=[DataRequired()])
-    trainID = StringField('Train ID',
-                        validators=[DataRequired(),Length(min=6,max=6)])
-    starting = StringField('Starting Station',
-                           validators=[DataRequired()])
-    ending = StringField('Ending Station',
-                           validators=[DataRequired()])
+    trainName = StringField('Train Name',validators=[DataRequired()])
+    trainID = StringField('Train ID',validators=[DataRequired(),Length(min=6,max=6)])
+    starting = StringField('Starting Station',validators=[DataRequired()])
+    ending = StringField('Ending Station',validators=[DataRequired()])
     monday = BooleanField('Monday')
     tuesday = BooleanField('Tuesday')
     wednesday = BooleanField('Wednesday')
@@ -22,7 +18,15 @@ class AddTrain(FlaskForm):
     friday = BooleanField('Friday')
     saturday = BooleanField('Saturday')
     sunday = BooleanField('Sunday')
-    coaches = SelectField('Coaches',choices = [('18','18'),('20','20'),('22','22')],validators = [Required()])
+    coaches = SelectField('Total Coaches',choices = [('18','18'),('20','20'),('22','22')],validators = [Required()])
+    acFirstClassSeats = StringField('AC First Class',validators=[DataRequired()])
+    acFirstClassFare = StringField('AC First Class Fare',validators=[DataRequired()])
+    acTwoTierSeats =  StringField('AC 2 Tier',validators=[DataRequired()])
+    acTwoTierFare = StringField('AC 2 Tier Fare',validators=[DataRequired()])
+    acThreeTierSeats =  StringField('AC 3 Tier',validators=[DataRequired()])
+    acThreeTierFare = StringField('AC 3 Tier Fare',validators=[DataRequired()])
+    sleeperClassSeats = StringField('Sleeper Class',validators=[DataRequired()])
+    sleeperClassFare = StringField('Sleeper Class Fare',validators=[DataRequired()])
     submit = SubmitField('Add Train')
 
 
@@ -43,6 +47,14 @@ class UpdateTrain(FlaskForm):
     saturday = BooleanField('Saturday')
     sunday = BooleanField('Sunday')
     coaches = SelectField('Coaches',choices = [('18','18'),('20','20'),('22','22')],validators = [Required()])
+    acFirstClassSeats = StringField('AC First Class',validators=[DataRequired()])
+    acFirstClassFare = StringField('AC First Class Fare',validators=[DataRequired()])
+    acTwoTierSeats =  StringField('AC 2 Tier',validators=[DataRequired()])
+    acTwoTierFare = StringField('AC 2 Tier Fare',validators=[DataRequired()])
+    acThreeTierSeats =  StringField('AC 3 Tier',validators=[DataRequired()])
+    acThreeTierFare = StringField('AC 3 Tier Fare',validators=[DataRequired()])
+    sleeperClassSeats = StringField('Sleeper Class',validators=[DataRequired()])
+    sleeperClassFare = StringField('Sleeper Class Fare',validators=[DataRequired()])
     submit = SubmitField('Update Train')
 
 class RegistrationForm(FlaskForm):

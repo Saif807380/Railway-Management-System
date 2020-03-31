@@ -155,8 +155,10 @@ def addTrain():
 			train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
 						num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
 						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
-						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data)
-			print(form.monday.data,form.tuesday.data)
+						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_seats=form.acFirstClassSeats.data,
+						ac_two_tier_seats=form.acTwoTierSeats.data,ac_three_tier_seats=form.acThreeTierSeats.data,sleeper_class_seats=form.sleeperClassSeats.data,
+						ac_first_class_fare=form.acFirstClassFare.data,ac_two_tier_fare=form.acTwoTierFare.data,ac_three_tier_fare=form.acThreeTierFare.data,
+						sleeper_class_fare=form.sleeperClassFare.data)
 			db.session.add(train)
 			db.session.commit()
 			flash('Your train has been added', 'success')
@@ -201,9 +203,12 @@ def updateTrain(loaded):
 				db.session.delete(train)
 				db.session.commit()
 				train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
-							num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
-							monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
-							friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data)
+						num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
+						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
+						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_seats=form.acFirstClassSeats.data,
+						ac_two_tier_seats=form.acTwoTierSeats.data,ac_three_tier_seats=form.acThreeTierSeats.data,sleeper_class_seats=form.sleeperClassSeats.data,
+						ac_first_class_fare=form.acFirstClassFare.data,ac_two_tier_fare=form.acTwoTierFare.data,ac_three_tier_fare=form.acThreeTierFare.data,
+						sleeper_class_fare=form.sleeperClassFare.data)
 				db.session.add(train)
 				db.session.commit()
 				flash('Your train has been updated', 'success')

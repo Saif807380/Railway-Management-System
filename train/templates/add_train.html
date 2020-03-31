@@ -1,6 +1,6 @@
 {% extends "header.html" %}
 {% block content %}
-	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; margin-left:25%;width:100%;">
+	<div style = "background: #ffffff; padding: 10px 20px; border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; margin-left:25%; margin-bottom: 10%; width:100%;">
         <form method="POST" action="">
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
@@ -88,6 +88,131 @@
                     	{{ form.coaches(class="form-control") }}
                     {% endif %}
                 </div>
+
+                <legend class="border-bottom mb-4">Seat Allottment</legend>
+
+                <div class="form-group">
+                    {{ form.acFirstClassSeats.label(class="form-control-label") }}
+
+                    {% if form.acFirstClassSeats.errors %}
+                        {{ form.acFirstClassSeats(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acFirstClassSeats.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acFirstClassSeats(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.acTwoTierSeats.label(class="form-control-label") }}
+
+                    {% if form.acTwoTierSeats.errors %}
+                        {{ form.acTwoTierSeats(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acTwoTierSeats.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acTwoTierSeats(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.acThreeTierSeats.label(class="form-control-label") }}
+
+                    {% if form.acThreeTierSeats.errors %}
+                        {{ form.acThreeTierSeats(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acThreeTierSeats.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acThreeTierSeats(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.sleeperClassSeats.label(class="form-control-label") }}
+
+                    {% if form.sleeperClassSeats.errors %}
+                        {{ form.sleeperClassSeats(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.sleeperClassSeats.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.sleeperClassSeats(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <legend class="border-bottom mb-4">Fare Allottment</legend>
+
+                <div class="form-group">
+                    {{ form.acFirstClassFare.label(class="form-control-label") }}
+
+                    {% if form.acFirstClassFare.errors %}
+                        {{ form.acFirstClassFare(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acFirstClassFare.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acFirstClassFare(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.acTwoTierFare.label(class="form-control-label") }}
+
+                    {% if form.acTwoTierFare.errors %}
+                        {{ form.acTwoTierFare(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acTwoTierFare.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acTwoTierFare(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.acThreeTierFare.label(class="form-control-label") }}
+
+                    {% if form.acThreeTierFare.errors %}
+                        {{ form.acThreeTierFare(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.acThreeTierFare.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.acThreeTierFare(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.sleeperClassFare.label(class="form-control-label") }}
+
+                    {% if form.sleeperClassFare.errors %}
+                        {{ form.sleeperClassFare(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.sleeperClassFare.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.sleeperClassFare(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-success") }}

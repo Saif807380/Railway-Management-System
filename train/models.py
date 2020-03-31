@@ -63,6 +63,14 @@ class Train(db.Model):
 	friday = db.Column(db.Integer,nullable=False,default=0)
 	saturday = db.Column(db.Integer,nullable=False,default=0)
 	sunday = db.Column(db.Integer,nullable=False,default=0)
+	ac_first_class_seats = db.Column(db.Integer,nullable=False)
+	ac_two_tier_seats = db.Column(db.Integer,nullable=False)
+	ac_three_tier_seats = db.Column(db.Integer,nullable=False)
+	sleeper_class_seats = db.Column(db.Integer,nullable=False)
+	ac_first_class_fare = db.Column(db.Integer,nullable=False)
+	ac_two_tier_fare = db.Column(db.Integer,nullable=False)
+	ac_three_tier_fare = db.Column(db.Integer,nullable=False)
+	sleeper_class_fare = db.Column(db.Integer,nullable=False)
 
 	def __repr__(self):
 		return f"Train('{self.train_no}', '{self.train_name}')"
