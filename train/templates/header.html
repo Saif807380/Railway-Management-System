@@ -50,6 +50,11 @@
 								<li><a href="{{ url_for('trainStatus') }}">Train Status</a></li>
 							{% endif %}
 
+							{% if title=='Fare Chart' %}
+								<li class="active"><a href="{{ url_for('fare') }}">View Fare Chart</a></li>
+							{% else %}
+								<li><a href="{{ url_for('fare') }}">View Fare Chart</a></li>
+							{% endif %}
 
 							{% if title=='Cancel Booking' %}
 								<li class="active"><a href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>

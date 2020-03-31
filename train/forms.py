@@ -109,6 +109,6 @@ def destination_station_choices():
 class BookTicket(FlaskForm):
     source = QuerySelectField('Select source station',query_factory=source_station_choices, get_label='source')  
     destination = QuerySelectField('Select destination',query_factory=destination_station_choices, get_label='destination')
-    date = DateField('Date',format='%d/%m/%Y', validators=[DataRequired()])
+    date = StringField('Journey Start Date',validators=[DataRequired()])
     tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
     submit = SubmitField('Find All Trains')

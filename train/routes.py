@@ -22,7 +22,7 @@ def bookTicket():
 		session["destination"]=(form.destination.data).destination
 		session["date"]=form.date.data
 		session["tier"]=form.tier.data
-		print(session["source"],session["date"])
+		print(session["source"],type(session["date"]))
 		return redirect(url_for('availableTrain'))
 	else:
 		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)

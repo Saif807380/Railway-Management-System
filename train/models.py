@@ -32,7 +32,7 @@ class Passenger(db.Model):
 	source = db.Column(db.String(20),nullable=False)
 	destination = db.Column(db.String(20),nullable=False)
 	tier = db.Column(db.String(20),nullable=False)
-	date = db.Column(db.Date())
+	date = db.Column(db.String(20),nullable=False)
 	train_no = db.Column(db.String(20),nullable=False)
 	ticket = db.relationship('Ticket',backref='passenger',lazy=True,uselist=False)  #uselist=False implies one-to-one relationship
 	def __repr__(self):
@@ -42,7 +42,7 @@ class Ticket(db.Model):
 	pnr_number = db.Column(db.String(10),primary_key=True)
 	destination = db.Column(db.String(20),nullable=False)
 	source = db.Column(db.String(20),nullable=False)
-	journey_date = db.Column(db.Date(),nullable=False)
+	journey_date = db.Column(db.String(20),nullable=False)
 	seat_no = db.Column(db.Integer,unique=True,nullable=False)
 	pass_id = db.Column(db.Integer,db.ForeignKey('passenger.pass_id'),nullable=False)
 	train_no = db.Column(db.Integer,db.ForeignKey('train.train_no'),nullable=False)
