@@ -1,33 +1,38 @@
 {% extends "header.html" %}
 {% block content %}
 
-    {% if my_bookings %}
-    <div class="content-section">
-        <div class="card">
-            <div class="card-header">
-                Your Bookings
+{% if my_bookings %}
+<div class="card">
+    <h3 style="text-align: center;">Your Bookings</h3>
+    <hr>
+    {% for ticket in my_bookings %}
+
+    <form method="POST" action="/my_bookings">
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <p class="mr-2">PNR No. {{ ticket.pnr_number }}</p>
+                </div>
+                <p class="article-content">Train No. {{ ticket.train_no }}</p>
+                <p class="article-content">Tier {{ ticket.tier }}</p>
+                <p class="article-content">Seat No. {{ ticket.seat_no }}</p>
+                <p class="article-content">Date of Journey {{ ticket.journey_date }}</p>
+                <input type="submit" name="{{ ticket.id }}" value="Cancel Ticket" class="btn btn-danger">
             </div>
-            {% for ticket in my_bookings %}
-            <div class="card-body">
-                <h5 class="card-title">PNR No. {{ ticket.pnr_number }}</h5>
-                <p class="card-text">Train No. {{ ticket.train_no }}</p>
-                <p class="card-text">Tier {{ ticket.tier }}</p>
-                <p class="card-text">Seat No. {{ ticket.seat_no }}</p>
-                <p class="card-text">Date of Journey {{ ticket.journey_date }}</p>
-                <a href="#" class="btn btn-primary">Cancel Ticket</a>
-            </div>
-            {% endfor %}
-        </div>
+        </article>
+    </form>
+
+    {% endfor %}
+
+</div>
+{% else %}
+<div class="card">
+    <h5 class="card-header">No Bookings Found</h5>
+    <div class="card-body">
+        <h5 class="card-title"></h5>
+        <p class="card-text">You don't have any Bookings.</p>
     </div>
-    {% else %}
-    <div class="card">
-        <h5 class="card-header">No Bookings Found</h5>
-        <div class="card-body">
-          <h5 class="card-title"></h5>
-          <p class="card-text">You don't have any Bookings. To book ticket now for your journey press book ticket button</p>
-          <a href="#" class="btn btn-primary">Book Ticket</a>
-        </div>
-      </div>
-    {% endif %}
+</div>
+{% endif %}
 
 {% endblock content %}

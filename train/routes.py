@@ -86,6 +86,9 @@ def myBookings():
 		adminLog = 0
 	my_bookings = [ticket for ticket in Ticket.query.filter_by(user_id = current_user.id)]
 	print(my_bookings)
+	if request.method =="POST":
+		print("INNN")
+		print(request.form)
 	return render_template('my_bookings.html',title= "My Bookings",my_bookings=my_bookings)
 
 @app.route('/fare', methods=['GET', 'POST'])
