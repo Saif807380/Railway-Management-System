@@ -1,6 +1,6 @@
 from train import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request, session
-from train.models import Admin, User, Train, Passenger
+from train.models import Admin, User, Train, Passenger, SeatStatus, Ticket
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 adminLog = 0    #To check if admin is logged in or not
@@ -57,7 +57,15 @@ def addPassenger():
 			print(session['source'],session['destination'])
 			for i in range(session['passengers']):
 				passenger = Passenger(name =form[f"name{i+1}"], age= form[f"age{i+1}"], user_id=current_user.id,source=session['source'],destination=session['destination'],tier=session['tier'],train_no=session['train_no'],date=session['date'])
+				seat = SeatStatus.query.filter_by(train_no = session['train_no'],  pass_id=0, seat_type=session['tier']).first()
+				seat_no = seat.seat_no
+				print(seat_no)
+				pnr_no = int(session['train_no'])*10000 + int(seat_no)			
 				db.session.add(passenger)
+				db.session.commit()
+				seat.pass_id= passenger.pass_id	
+				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'])
+				db.session.add(ticket)
 			db.session.commit()
 			return redirect(url_for('home'))
 	return render_template('add_passengers.html',title="Add Passengers",passengers=0,admin = adminLog,loaded=False)
@@ -70,13 +78,15 @@ def trainStatus():
 		adminLog = 0
 	return render_template('train_status.html',title= "Train Status",admin = adminLog)
 
-@app.route('/cancel_booking', methods=['GET', 'POST'])
+@app.route('/my_bookings', methods=['GET', 'POST'])
 @login_required
-def cancelBooking():
-	form =CancelBookingForm()
-	if form.validate_on_submit():
-		return redirect(url_for('home'))
-	return render_template('cancel_booking.html',title= "Cancel Booking",form=form)
+def myBookings():
+	global adminLog
+	if adminLog == 1:
+		adminLog = 0
+	my_bookings = [ticket for ticket in Ticket.query.filter_by(user_id = current_user.id)]
+	print(my_bookings)
+	return render_template('my_bookings.html',title= "My Bookings",my_bookings=my_bookings)
 
 @app.route('/fare', methods=['GET', 'POST'])
 @login_required
@@ -146,6 +156,7 @@ def addTrain():
 	if adminLog == 1:
 		form = AddTrain()
 		if form.validate_on_submit():
+			print("Yes")
 			days=['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 			for day in days:
 				if form[day].data:
@@ -153,14 +164,40 @@ def addTrain():
 				else:
 					form[day].data = 0
 			train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
-						num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
+						source= form.starting.data,destination = form.ending.data,
 						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
-						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_seats=form.acFirstClassSeats.data,
-						ac_two_tier_seats=form.acTwoTierSeats.data,ac_three_tier_seats=form.acThreeTierSeats.data,sleeper_class_seats=form.sleeperClassSeats.data,
+						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_coaches=form.acFirstClassCoaches.data,
+						ac_two_tier_coaches=form.acTwoTierCoaches.data,ac_three_tier_coaches=form.acThreeTierCoaches.data,sleeper_class_coaches=form.sleeperClassCoaches.data,
+						ac_first_class_available_seats=24*int(form.acFirstClassCoaches.data),
+						ac_two_tier_available_seats=54*int(form.acTwoTierCoaches.data), ac_three_tier_available_seats=64*int(form.acThreeTierCoaches.data),
+						sleeper_class_available_seats=72*int(form.sleeperClassCoaches.data),
 						ac_first_class_fare=form.acFirstClassFare.data,ac_two_tier_fare=form.acTwoTierFare.data,ac_three_tier_fare=form.acThreeTierFare.data,
 						sleeper_class_fare=form.sleeperClassFare.data)
 			db.session.add(train)
+			print("Train read Success")
+			ac1_seats = 24*int(form.acFirstClassCoaches.data)
+			for i in range(ac1_seats):
+				print("Inside Loop")
+				seat = SeatStatus(train_no = form.trainID.data, seat_no = 1000+i+1, seat_type="1A")
+				db.session.add(seat)
+
+			ac2_seats = 54*int(form.acTwoTierCoaches.data)
+			for i in range(ac2_seats):
+				seat = SeatStatus(train_no = form.trainID.data, seat_no = 2000+i+1, seat_type="2A")
+				db.session.add(seat)
+			
+			ac3_seats = 64*int(form.acThreeTierCoaches.data)
+			for i in range(ac3_seats):
+				seat = SeatStatus(train_no = form.trainID.data, seat_no = 3000+i+1, seat_type="3A")
+				db.session.add(seat)
+			
+			sleep_seats = 72*int(form.sleeperClassCoaches.data)
+			for i in range(sleep_seats):
+				seat = SeatStatus(train_no = form.trainID.data, seat_no = 4000+i+1, seat_type="Sl")
+				db.session.add(seat)
+
 			db.session.commit()
+
 			flash('Your train has been added', 'success')
 			return redirect(url_for('view'))
 		return render_template('add_train.html',title="Add Train",form = form,admin = adminLog)

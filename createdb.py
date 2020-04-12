@@ -1,5 +1,5 @@
 from train import db
-from train.models import Admin, User, Passenger, Ticket, Train , Station
+from train.models import Admin, User, Passenger, Ticket, Train , Station, SeatStatus
 from train import bcrypt
 
 db.create_all()

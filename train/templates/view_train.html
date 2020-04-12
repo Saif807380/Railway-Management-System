@@ -10,12 +10,11 @@
 		      <th scope="col" style="text-align: center;">Train Name</th>
 		      <th scope="col" style="text-align: center;">Starting Station</th>
 		      <th scope="col" style="text-align: center;">Ending Station</th>
-		      <th scope="col" style="text-align: center;">Number of Coaches</th>
 		      <th scope="col" style="text-align: center;">Running Days</th>
-		      <th scope="col" style="text-align: center;">AC First Class Seats</th>
-		      <th scope="col" style="text-align: center;">AC Two Tier Seats</th>
-		      <th scope="col" style="text-align: center;">AC Three Tier Seats</th>
-		      <th scope="col" style="text-align: center;">Sleeper Class Seats</th>
+		      <th scope="col" style="text-align: center;">AC First Class Coaches</th>
+		      <th scope="col" style="text-align: center;">AC Two Tier Coaches</th>
+		      <th scope="col" style="text-align: center;">AC Three Tier Coaches</th>
+		      <th scope="col" style="text-align: center;">Sleeper Class Coaches</th>
 		      <th scope="col" style="text-align: center;">AC First Class Fare</th>
 		      <th scope="col" style="text-align: center;">AC Two Tier Fare</th>
 		      <th scope="col" style="text-align: center;">AC Three Tier Fare</th>
@@ -35,16 +34,15 @@
 			      	<td style="text-align: center;">{{ train.train_name }}</td>
 			      	<td style="text-align: center;">{{ train.source }}</td>
 			      	<td style="text-align: center;">{{ train.destination }}</td>
-			      	<td style="text-align: center;">{{ train.num_of_coaches }}</td>
 			      	<td style="text-align: center;">
 			      		{% for day in running_days %}
 			      			{{ day }},
 			      		{% endfor %}
 			      	</td>
-			      	<td style="text-align: center;">{{ train.ac_first_class_seats }}</td>
-			      	<td style="text-align: center;">{{ train.ac_two_tier_seats }}</td>
-			      	<td style="text-align: center;">{{ train.ac_three_tier_seats }}</td>
-			      	<td style="text-align: center;">{{ train.sleeper_class_seats }}</td>
+			      	<td style="text-align: center;">{{ train.ac_first_class_coaches }}</td>
+			      	<td style="text-align: center;">{{ train.ac_two_tier_coaches }}</td>
+			      	<td style="text-align: center;">{{ train.ac_three_tier_coaches }}</td>
+			      	<td style="text-align: center;">{{ train.sleeper_class_coaches }}</td>
 			      	<td style="text-align: center;">{{ train.ac_first_class_fare }}</td>
 			      	<td style="text-align: center;">{{ train.ac_two_tier_fare }}</td>
 			      	<td style="text-align: center;">{{ train.ac_three_tier_fare }}</td>

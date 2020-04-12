@@ -40,6 +40,7 @@ class Passenger(db.Model):
 
 class Ticket(db.Model):
 	pnr_number = db.Column(db.String(10),primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 	destination = db.Column(db.String(20),nullable=False)
 	source = db.Column(db.String(20),nullable=False)
 	journey_date = db.Column(db.String(20),nullable=False)
@@ -53,7 +54,6 @@ class Ticket(db.Model):
 class Train(db.Model):
 	train_no = db.Column(db.Integer,primary_key=True)
 	train_name = db.Column(db.String(30),unique=True,nullable=False)
-	num_of_coaches = db.Column(db.Integer,nullable=False)
 	source = db.Column(db.String(20),nullable=False)
 	destination = db.Column(db.String(20),nullable=False)
 	monday = db.Column(db.Integer,nullable=False,default=0)
@@ -63,10 +63,14 @@ class Train(db.Model):
 	friday = db.Column(db.Integer,nullable=False,default=0)
 	saturday = db.Column(db.Integer,nullable=False,default=0)
 	sunday = db.Column(db.Integer,nullable=False,default=0)
-	ac_first_class_seats = db.Column(db.Integer,nullable=False)
-	ac_two_tier_seats = db.Column(db.Integer,nullable=False)
-	ac_three_tier_seats = db.Column(db.Integer,nullable=False)
-	sleeper_class_seats = db.Column(db.Integer,nullable=False)
+	ac_first_class_coaches = db.Column(db.Integer,nullable=False)
+	ac_two_tier_coaches = db.Column(db.Integer,nullable=False)
+	ac_three_tier_coaches = db.Column(db.Integer,nullable=False)
+	sleeper_class_coaches = db.Column(db.Integer,nullable=False)
+	ac_first_class_available_seats = db.Column(db.Integer,nullable=False)
+	ac_two_tier_available_seats = db.Column(db.Integer,nullable=False)
+	ac_three_tier_available_seats = db.Column(db.Integer,nullable=False)
+	sleeper_class_available_seats = db.Column(db.Integer,nullable=False)
 	ac_first_class_fare = db.Column(db.Integer,nullable=False)
 	ac_two_tier_fare = db.Column(db.Integer,nullable=False)
 	ac_three_tier_fare = db.Column(db.Integer,nullable=False)
@@ -74,6 +78,16 @@ class Train(db.Model):
 
 	def __repr__(self):
 		return f"Train('{self.train_no}', '{self.train_name}')"
+
+class SeatStatus(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	train_no = db.Column(db.Integer, nullable=False)
+	seat_no = db.Column(db.Integer, nullable=False)
+	pass_id = db.Column(db.Integer, nullable=False, default=0)
+	seat_type = db.Column(db.String(20), nullable=False)
+	def __repr__(self):
+		return f"Ticket('{self.id}', '{self.train_no}', '{self.seat_no}',  '{self.pass_id}')"
+
 
 class Station(db.Model):
 	station_id = db.Column(db.Integer,primary_key=True)

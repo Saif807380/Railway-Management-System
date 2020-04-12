@@ -1,5 +1,6 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -7,6 +8,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 </head>
+
 <body>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark stick-top">
 		<div class="container-fluid">
@@ -24,9 +26,9 @@
 
 					<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('cancelBooking') }}">Cancel Booking</a>
+					<li class="nav-item"><a class="nav-link" href="{{ url_for('myBookings') }}">My Bookings</a>
 					</li>
-					
+
 					<li class="nav-item"><a class="nav-link" href="{{ url_for('fare') }}">Fare Chart</a>
 					</li>
 
@@ -73,62 +75,65 @@
 	<div class="border rounded" style="margin: 100px;margin-top: 0px;">
 		<div class="table-responsive">
 			<form name="myForm" action="" method="post" onsubmit="">
-<div>
-<div style="margin-left:50px;margin-top:30px;" >
-<h2>Fare chart for AC First class</h2>
-</div>
-<div class="border rounded" style="margin: 50px;margin-top: 20px;">
-		<div class="table-responsive">
-			<form name="myForm" action="" method="post" onsubmit="">
-<table class="table table-striped" >
-  <thead>
-    <tr>
-      <th scope="col">Stations</th>
-      <th scope="col">Mumbai</th>
-	<th scope="col">Chennai</th>
-      <th scope="col">Delhi</th>
-	<th scope="col">Pune</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Mumbai</th>
-      <td>-</td>
-      <td>2500</td>
-	<td>3750</td>
-	<td>1000</td>
-    </tr>
-    <tr>
-      <th scope="row">Chennai</th>
-      <td>2500</td>
-	  <td>-</td>
-	  <td>4000</td>
-	  <td>2000</td>
-    </tr>
-    <tr>
-      <th scope="row">Delhi</th>
-      <td>3750</td>
-	  <td>4000</td>
-	  <td>-</td>
-	  <td>3500</td>
-    </tr>
-	<tr>
-      <th scope="row">Pune</th>
-      <td>1000</td>
-	  <td>3500</td>
-	  <td>2000</td>
-	  <td>-</td>
-    </tr>
-  </tbody>
-</table>
-</form>
+				<div>
+					<div style="margin-left:50px;margin-top:30px;">
+						<h2>Fare chart for AC First class</h2>
+					</div>
+					<div class="border rounded" style="margin: 50px;margin-top: 20px;">
+						<div class="table-responsive">
+							<form name="myForm" action="" method="post" onsubmit="">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th scope="col">Stations</th>
+											<th scope="col">Mumbai</th>
+											<th scope="col">Chennai</th>
+											<th scope="col">Delhi</th>
+											<th scope="col">Pune</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">Mumbai</th>
+											<td>-</td>
+											<td>2500</td>
+											<td>3750</td>
+											<td>1000</td>
+										</tr>
+										<tr>
+											<th scope="row">Chennai</th>
+											<td>2500</td>
+											<td>-</td>
+											<td>4000</td>
+											<td>2000</td>
+										</tr>
+										<tr>
+											<th scope="row">Delhi</th>
+											<td>3750</td>
+											<td>4000</td>
+											<td>-</td>
+											<td>3500</td>
+										</tr>
+										<tr>
+											<th scope="row">Pune</th>
+											<td>1000</td>
+											<td>3500</td>
+											<td>2000</td>
+											<td>-</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
-	</div>
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+		</div>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+				<script
+					src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html></div>
-</body>
-</html> 
+</html>

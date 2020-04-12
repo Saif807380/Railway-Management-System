@@ -56,10 +56,10 @@
 								<li><a href="{{ url_for('fare') }}">View Fare Chart</a></li>
 							{% endif %}
 
-							{% if title=='Cancel Booking' %}
-								<li class="active"><a href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>
+							{% if title=='My Bookings' %}
+								<li class="active"><a href="{{ url_for('myBookings') }}">My Bookings</a></li>
 							{% else %}
-								<li><a href="{{ url_for('cancelBooking') }}">Cancel Booking</a></li>
+								<li><a href="{{ url_for('myBookings') }}">My Bookings</a></li>
 							{% endif %}
 
 							{% if title=='Account' %}
