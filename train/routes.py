@@ -67,9 +67,11 @@ def addPassenger():
 				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'])
 				db.session.add(ticket)
 			db.session.commit()
-			return redirect(url_for('home'))
+			flash('Ticket has been booked successfully', 'info')
+			return redirect(url_for('myBookings'))
 	return render_template('add_passengers.html',title="Add Passengers",passengers=0,admin = adminLog,loaded=False)
-	
+
+
 @app.route('/train_status')
 @login_required
 def trainStatus():
@@ -85,11 +87,26 @@ def myBookings():
 	if adminLog == 1:
 		adminLog = 0
 	my_bookings = [ticket for ticket in Ticket.query.filter_by(user_id = current_user.id)]
-	print(my_bookings)
-	if request.method =="POST":
-		print("INNN")
-		print(request.form)
 	return render_template('my_bookings.html',title= "My Bookings",my_bookings=my_bookings)
+
+@app.route("/ticket/<string:pnr>")
+def ticket(pnr):
+	ticket = Ticket.query.get(pnr)
+	passenger = ticket.passenger
+	return render_template('ticket.html',ticket=ticket,passenger=passenger)
+
+@app.route("/ticket/<string:pnr>/cancel", methods=['POST'])
+@login_required
+def cancelTicket(pnr):
+	ticket = Ticket.query.get(pnr)
+	passenger = ticket.passenger
+	seat = SeatStatus.query.filter_by(pass_id=passenger.pass_id).first()
+	seat.pass_id=0
+	db.session.delete(ticket)
+	db.session.delete(passenger)
+	db.session.commit()
+	flash('Ticket has been canceled', 'info')
+	return redirect(url_for('myBookings'))
 
 @app.route('/fare', methods=['GET', 'POST'])
 @login_required
