@@ -1,10 +1,12 @@
 from train import app, db, bcrypt
-from flask import render_template, url_for, flash, redirect, request, session
+from flask import render_template, url_for, flash, redirect, request, session, make_response
 from train.models import Admin, User, Train, Passenger, SeatStatus, Ticket
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 import datetime
+import pdfkit
 adminLog = 0    #To check if admin is logged in or not
+config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 @app.route('/')
 @app.route('/home')
@@ -73,7 +75,9 @@ def addPassenger():
 				db.session.add(passenger)
 				db.session.commit()
 				seat.pass_id= passenger.pass_id	
-				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'])
+				train = Train.query.filter_by(train_no = session['train_no']).first()
+				passenger_class = {'1A': train.ac_first_class_fare,'2A':train.ac_two_tier_fare,'3A':train.ac_three_tier_fare,'Sl':train.sleeper_class_fare}
+				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'],fare = str(passenger_class[session['tier']]))
 				db.session.add(ticket)
 			db.session.commit()
 			flash('Ticket has been booked successfully', 'info')
@@ -103,6 +107,16 @@ def ticket(pnr):
 	ticket = Ticket.query.get(pnr)
 	passenger = ticket.passenger
 	return render_template('ticket.html',ticket=ticket,passenger=passenger)
+
+@app.route("/ticket/<string:pnr>/download")
+def download(pnr):
+	ticket = Ticket.query.get(pnr)
+	rendered = render_template('pdf_template.html',ticket = ticket,passenger = ticket.passenger)
+	pdf = pdfkit.from_string(rendered,False,configuration=config)
+	response = make_response(pdf)
+	response.headers['Content-type'] = 'application/pdf'
+	response.headers['Content-Disposition'] = 'inline; filename='+str(pnr)+'.pdf'
+	return response
 
 @app.route("/ticket/<string:pnr>/cancel", methods=['POST'])
 @login_required
@@ -274,7 +288,7 @@ def updateTrain(loaded):
 				db.session.delete(train)
 				db.session.commit()
 				train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
-						num_of_coaches = form.coaches.data,source= form.starting.data,destination = form.ending.data,
+						source= form.starting.data,destination = form.ending.data,
 						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
 						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_seats=form.acFirstClassSeats.data,
 						ac_two_tier_seats=form.acTwoTierSeats.data,ac_three_tier_seats=form.acThreeTierSeats.data,sleeper_class_seats=form.sleeperClassSeats.data,

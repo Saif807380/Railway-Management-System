@@ -48,8 +48,9 @@ class Ticket(db.Model):
 	pass_id = db.Column(db.Integer,db.ForeignKey('passenger.pass_id'),nullable=False)
 	train_no = db.Column(db.Integer,db.ForeignKey('train.train_no'),nullable=False)
 	tier = db.Column(db.String(20),nullable=False)
+	fare = db.Column(db.String(20),nullable=False)
 	def __repr__(self):
-		return f"Ticket('{self.pnr_number}', '{self.source}', '{self.destination}', '{self.journey_date}', '{self.train_no}', '{self.seat_no}', '{self.pass_id}')"
+		return f"Ticket('{self.pnr_number}', '{self.source}', '{self.destination}', '{self.journey_date}', '{self.train_no}', '{self.seat_no}', '{self.pass_id}','{self.fare}')"
 
 class Train(db.Model):
 	train_no = db.Column(db.Integer,primary_key=True)
