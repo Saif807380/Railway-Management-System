@@ -88,7 +88,7 @@
 				
 				{% if admin==0  and not current_user.is_authenticated %}
 				<div class="col-xl-9 mx-auto">
-					<h1 class="mb-5">NOW BOOK RAILWAY TICKETS AT LIGHTENING PACE </h1>
+					<h1 class="mb-5">WELCOME TO OUR RAILWAY BOOKING WEBSITE</h1>
 					
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
@@ -100,9 +100,23 @@
 						</div>
 					</form>
 				</div>
+				{% elif admin==0 and current_user.is_authenticated %}
+				<div class="col-xl-9 mx-auto">
+					<h1 class="mb-5">NOW BOOK YOUR RAILWAY TICKETS AT LIGHTENING PACE </h1>
+					
+				</div>
+				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+					<form action="{{ url_for('register') }}">
+						<div class="form-row justify-content-center">
+							<div class="col-12 col-md-3 text-center text-sm-center text-md-center"><button
+									class="btn btn-primary btn-block btn-lg text-center text-sm-center text-md-center text-lg-center text-xl-center"
+									type="submit">Book Ticket</button></div>
+						</div>
+					</form>
+				</div>
 				{% else %}
 				<div class="col-xl-9 mx-auto">
-					<h2 class="mb-5">WELCOME ADMIN,PROCEED AHEAD </h2>
+					<h1 class="mb-5">WELCOME ADMIN,    PROCEED AHEAD </h1>
 					
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
