@@ -111,7 +111,12 @@ def cancelTicket(pnr):
 @app.route('/fare', methods=['GET', 'POST'])
 @login_required
 def fare():
-	return render_template('fare.html',title= "Fare Chart")
+		trains = Train.query.all()
+		if len(trains) > 0:
+			return render_template('fare.html',title= "Fare Chart",trains= trains,admin = adminLog)
+		else:
+			return "no trains found"
+	
 
 @app.route('/account' , methods=['GET', 'POST'])
 @login_required

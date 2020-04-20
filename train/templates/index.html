@@ -85,11 +85,12 @@
 		</div>
 		<div class="container">
 			<div class="row">
+				
+				{% if admin==0  and not current_user.is_authenticated %}
 				<div class="col-xl-9 mx-auto">
 					<h1 class="mb-5">NOW BOOK RAILWAY TICKETS AT LIGHTENING PACE </h1>
 					
 				</div>
-				{% if admin==0  and not current_user.is_authenticated %}
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('register') }}">
 						<div class="form-row justify-content-center">
@@ -100,11 +101,15 @@
 					</form>
 				</div>
 				{% else %}
+				<div class="col-xl-9 mx-auto">
+					<h2 class="mb-5">WELCOME ADMIN,PROCEED AHEAD </h2>
+					
+				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('bookTicket') }}">
 						<div class="form-row justify-content-center">
-							<div class="col-12 col-md-3"><button class="btn btn-primary btn-block btn-lg"
-									type="submit">Book Ticket</button></div>
+							<!--<div class="col-12 col-md-3"><button class="btn btn-primary btn-block btn-lg"
+									type="submit">Welcome Admin</button></div>-->
 						</div>
 					</form>
 				</div>
