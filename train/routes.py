@@ -114,7 +114,7 @@ def cancelTicket(pnr):
 	db.session.delete(ticket)
 	db.session.delete(passenger)
 	db.session.commit()
-	flash('Ticket has been canceled', 'info')
+	flash('Ticket has been cancelled', 'info')
 	return redirect(url_for('myBookings'))
 
 @app.route('/fare', methods=['GET', 'POST'])
