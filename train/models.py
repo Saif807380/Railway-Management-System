@@ -75,6 +75,9 @@ class Train(db.Model):
 	ac_two_tier_fare = db.Column(db.Integer,nullable=False)
 	ac_three_tier_fare = db.Column(db.Integer,nullable=False)
 	sleeper_class_fare = db.Column(db.Integer,nullable=False)
+	departure = db.Column(db.String(10),nullable=False)
+	arrival = db.Column(db.String(10),nullable=False)
+	total = db.Column(db.String(10),nullable=False)
 
 	def __repr__(self):
 		return f"Train('{self.train_no}', '{self.train_name}')"

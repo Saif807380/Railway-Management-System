@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,DateField,IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, Required, ValidationError
+from wtforms_components import TimeField
 from train.models import User,Train
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from train import db
@@ -26,6 +27,9 @@ class AddTrain(FlaskForm):
     acThreeTierFare = StringField('AC 3 Tier Fare',validators=[DataRequired()])
     sleeperClassCoaches = StringField('Sleeper Class',validators=[DataRequired()])
     sleeperClassFare = StringField('Sleeper Class Fare',validators=[DataRequired()])
+    departure = TimeField('Departure')
+    arrival = TimeField('Arrival')
+    tot_time = TimeField('Total Time')
     submit = SubmitField('Add Train')
 
 

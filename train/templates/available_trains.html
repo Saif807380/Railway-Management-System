@@ -116,45 +116,74 @@
 						{{ running_days.append(key) or "" }}
 						{% endif %}
 						{% endfor %}
-						<td>
-							<div class="radio">
-								<label><input type="radio" id='{{ train.train_no }}' name="select_train"
-										value="{{ train.train_no }}">{{ train.train_no }}</label>
-							</div>
-						</td>
 
-						<td>
-							<div style="margin: 10px 10px 0px 0px;">
-								<label for='{{ train.train_no }}'>{{ train.train_name }}</label>
-							</div>
-						</td>
-						<td>
-							<div style="margin: 10px 10px 0px 0px;">
-								<label for='{{ train.train_no }}'>
-									{% for day in running_days %}
-									{{ day }},
+						{% for day in running_days %}
+							{% if week[day] == ans %}
+								{% for keys in train.__table__.columns._data.keys() %}
+									{% if keys == train_class[tier] and train[keys] > 0  %}
+											<td>
+												<div class="radio">
+													<label><input type="radio" id='{{ train.train_no }}' name="select_train"
+															value="{{ train.train_no }}">{{ train.train_no }}</label>
+												</div>
+											</td>
+
+											<td>
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>{{ train.train_name }}</label>
+												</div>
+											</td>
+											<td>
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>
+														{% for day in running_days %}
+														{{ day }},
+														{% endfor %}
+													</label>
+												</div>
+											</td>
+
+											<td></td>
+											<td></td>
+
+											<td style="margin-left: 20px;">
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>
+														{{ train.departure }}
+													</label>
+												</div>
+											</td>
+											<td>
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>
+														{{ train.arrival }}
+													</label>
+												</div>
+											</td>
+											<td style="margin-right: 20px;">
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>
+														{{ train.total }}
+													</label>
+												</div>
+											</td>
+											</td>
+
+											<td></td>
+											<td></td>
+
+											<td>
+												<div style="margin: 10px 10px 0px 0px;">
+													<label for='{{ train.train_no }}'>{{ tier }}</label>
+												</div>
+											</td>
+										{% endif %}
 									{% endfor %}
-								</label>
-							</div>
-						</td>
-
-						<td></td>
-						<td></td>
-
-						<td style="margin-left: 20px;"></td>
-						<td></td>
-						<td style="margin-right: 20px;"></td>
-
-						<td></td>
-						<td></td>
-
-						<td>
-							<div style="margin: 10px 10px 0px 0px;">
-								<label for='{{ train.train_no }}'>{{ tier }}</label>
-							</div>
-						</td>
+							{% endif %}
+						{% endfor %}
+							
 						
-					</tr>
+						</tr>
 
 					{% endfor %}
 				</tbody>

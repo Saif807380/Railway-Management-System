@@ -3,6 +3,7 @@ from flask import render_template, url_for, flash, redirect, request, session
 from train.models import Admin, User, Train, Passenger, SeatStatus, Ticket
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
+import datetime
 adminLog = 0    #To check if admin is logged in or not
 
 @app.route('/')
@@ -21,6 +22,7 @@ def bookTicket():
 		session["source"] = (form.source.data).source
 		session["destination"]=(form.destination.data).destination
 		session["date"]=form.date.data
+		print(session["date"])
 		session["tier"]=form.tier.data
 		print(session["source"],type(session["date"]))
 		return redirect(url_for('availableTrain'))
@@ -35,11 +37,18 @@ def availableTrain():
 	if adminLog == 1:
 		adminLog = 0
 	print(session["source"],session["destination"])
+	year,month,day = (int(x) for x in session["date"].split('-'))
+	ans = datetime.date(year, month, day)
+	ans = ans.weekday()
+	print(ans)
+	week = {'monday':0,'tuesday':1,'wednesday':2,'thursday':3,'friday':4,'saturday':5,'sunday':6}
+	train_class = {'1A':'ac_first_class_available_seats','2A':'ac_two_tier_available_seats','3A':'ac_three_tier_available_seats','Sl':'sleeper_class_available_seats'}
 	selected_trains = [train for train in Train.query.filter_by(source = session["source"], destination=session["destination"])]
 	if request.method=='POST':
 		session["train_no"] = request.form['select_train']
 		return redirect(url_for('addPassenger'))		
-	return render_template('available_trains.html', selected_trains=selected_trains,source = session['source'],destination=session['destination'])
+	
+	return render_template('available_trains.html', selected_trains=selected_trains,source = session['source'],destination=session['destination'],ans=ans,week=week,train_class=train_class,tier = session['tier'])
 
 
 @app.route('/book_ticket/add_passengers', methods=['GET','POST'])
@@ -175,7 +184,7 @@ def addTrain():
 						ac_two_tier_available_seats=54*int(form.acTwoTierCoaches.data), ac_three_tier_available_seats=64*int(form.acThreeTierCoaches.data),
 						sleeper_class_available_seats=72*int(form.sleeperClassCoaches.data),
 						ac_first_class_fare=form.acFirstClassFare.data,ac_two_tier_fare=form.acTwoTierFare.data,ac_three_tier_fare=form.acThreeTierFare.data,
-						sleeper_class_fare=form.sleeperClassFare.data)
+						sleeper_class_fare=form.sleeperClassFare.data,departure = str(form.departure.data),arrival = str(form.arrival.data) , total = str(form.tot_time.data))
 			db.session.add(train)
 			print("Train read Success")
 			ac1_seats = 24*int(form.acFirstClassCoaches.data)
