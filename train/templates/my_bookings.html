@@ -7,20 +7,17 @@
     <hr>
     {% for ticket in my_bookings %}
 
-    <form method="POST" action="/my_bookings">
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
-                    <p class="mr-2">PNR No. {{ ticket.pnr_number }}</p>
+                    <a class="mr-2" href="{{ url_for('ticket', pnr=ticket.pnr_number) }}">PNR No. {{ ticket.pnr_number }}</a>
                 </div>
                 <p class="article-content">Train No. {{ ticket.train_no }}</p>
                 <p class="article-content">Tier {{ ticket.tier }}</p>
                 <p class="article-content">Seat No. {{ ticket.seat_no }}</p>
                 <p class="article-content">Date of Journey {{ ticket.journey_date }}</p>
-                <input type="submit" name="{{ ticket.id }}" value="Cancel Ticket" class="btn btn-danger">
             </div>
         </article>
-    </form>
 
     {% endfor %}
 

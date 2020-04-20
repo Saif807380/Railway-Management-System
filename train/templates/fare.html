@@ -1,139 +1,41 @@
-<!DOCTYPE html>
-<html>
+{% extends "header.html" %}
+{% block content %}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-	<title>Fare Chart</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-</head>
+	<div style = "background: orange; padding: 10px 20px; font-size: 20px ;border: 1px solid #dddddd; border-radius: 3px; margin-top: 10%; width:150%;margin-left: 5%;margin-right: 5%">
 
-<body>
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark stick-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="{{ url_for('home') }}"><img src="../static/assets/img/logo.png"
-					height="30 px"></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
+		
+		<table class="table table-striped table-dark">
+		  <thead class="thead-dark">
+		    <tr>
+		     <!-- <th scope="col" style="text-align: center;">Train No</th>
+		      <th scope="col" style="text-align: center;">Train Name</th>-->
+		      <span><th scope="col" style="text-align: center;">Source</th></span>
+		      <span><th scope="col" style="text-align: center;">Destination</th></span>
+		      <span><th scope="col" style="text-align: center;">AC Ist</th></span>
+		      <span><th scope="col" style="text-align: center;">AC IInd</th></span>
+		      <span><th scope="col" style="text-align: center;">AC IIIrd</th></span>
+		      <span><th scope="col" style="text-align: center;">Sleeper</th></span>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% for train in trains %}		  		
+		  		<tr>
+			      	<!--<td style="text-align: center;">{{ train.train_no }}</td>
+			      	<td style="text-align: center;">{{ train.train_name }}</td>-->
+			      	<td style="text-align: center;">{{ train.source }}</td>
+			      	<td style="text-align: center;">{{ train.destination }}</td>
+			      	
+			      	<td style="text-align: center;">{{ train.ac_first_class_fare }}</td>
+			      	<td style="text-align: center;">{{ train.ac_two_tier_fare }}</td>
+			      	<td style="text-align: center;">{{ train.ac_three_tier_fare }}</td>
+			      	<td style="text-align: center;">{{ train.sleeper_class_fare }}</td>
+		    	</tr>
 
-					{% if current_user.is_authenticated %}
+		  	{% endfor %}
+		
+		  </tbody>
+		</table>
 
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('bookTicket') }}">Book Ticket</a></li>
+	</div>
 
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('myBookings') }}">My Bookings</a>
-					</li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('fare') }}">Fare Chart</a>
-					</li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout <span
-								class="glyphicon glyphicon-log-out"></span></a>
-					</li>
-
-					{% elif admin==1 %}
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('addTrain') }}">Add Trains</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('update') }}">Update Trains</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('view') }}">View Trains</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('adminLogout') }}">Logout <span
-								class="glyphicon glyphicon-log-out"></span></a>
-					</li>
-
-					{% else %}
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-							aria-haspopup="true" aria-expanded="false">More</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="{{ url_for('adminLogin') }}">Admin Login</a>
-							<a class="dropdown-item" href="#">Help</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">About Us</a>
-						</div>
-					</li>
-
-					{% endif %}
-
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<div class="border rounded" style="margin: 100px;margin-top: 0px;">
-		<div class="table-responsive">
-			<form name="myForm" action="" method="post" onsubmit="">
-				<div>
-					<div style="margin-left:50px;margin-top:30px;">
-						<h2>Fare chart for AC First class</h2>
-					</div>
-					<div class="border rounded" style="margin: 50px;margin-top: 20px;">
-						<div class="table-responsive">
-							<form name="myForm" action="" method="post" onsubmit="">
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th scope="col">Stations</th>
-											<th scope="col">Mumbai</th>
-											<th scope="col">Chennai</th>
-											<th scope="col">Delhi</th>
-											<th scope="col">Pune</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row">Mumbai</th>
-											<td>-</td>
-											<td>2500</td>
-											<td>3750</td>
-											<td>1000</td>
-										</tr>
-										<tr>
-											<th scope="row">Chennai</th>
-											<td>2500</td>
-											<td>-</td>
-											<td>4000</td>
-											<td>2000</td>
-										</tr>
-										<tr>
-											<th scope="row">Delhi</th>
-											<td>3750</td>
-											<td>4000</td>
-											<td>-</td>
-											<td>3500</td>
-										</tr>
-										<tr>
-											<th scope="row">Pune</th>
-											<td>1000</td>
-											<td>3500</td>
-											<td>2000</td>
-											<td>-</td>
-										</tr>
-									</tbody>
-								</table>
-							</form>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-
-		</div>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-				<script
-					src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock content %}
