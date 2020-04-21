@@ -82,79 +82,67 @@
                     {{ form.saturday(class="form-check-input") }}
                     {{ form.saturday.label(class="form-check-label") }}
                 </div>
+    
+
+                <legend class="border-bottom mb-4">Coach Allotment (Minimum 2 For Each)</legend>
+
                 <div class="form-group">
-                    {{ form.coaches.label(class="form-control-label") }}
-                    {% if form.coaches.errors %}
-                        {{ form.coaches(class="form-control is-invalid") }}
+                    {{ form.acFirstClassCoaches.label(class="form-control-label") }}
+
+                    {% if form.acFirstClassCoaches.errors %}
+                        {{ form.acFirstClassCoaches(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.coaches.errors %}
+                            {% for error in form.acFirstClassCoaches.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                    	{{ form.coaches(class="form-control") }}
-                    {% endif %}
-                </div>
-
-                <legend class="border-bottom mb-4">Seat Allottment</legend>
-
-                <div class="form-group">
-                    {{ form.acFirstClassSeats.label(class="form-control-label") }}
-
-                    {% if form.acFirstClassSeats.errors %}
-                        {{ form.acFirstClassSeats(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.acFirstClassSeats.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.acFirstClassSeats(class="form-control form-control-lg",value = train.ac_first_class_seats) }}
+                        {{ form.acFirstClassCoaches(class="form-control form-control-lg",value = train.ac_first_class_coaches) }}
                     {% endif %}
                 </div>
 
                 <div class="form-group">
-                    {{ form.acTwoTierSeats.label(class="form-control-label") }}
+                    {{ form.acTwoTierCoaches.label(class="form-control-label") }}
 
-                    {% if form.acTwoTierSeats.errors %}
-                        {{ form.acTwoTierSeats(class="form-control form-control-lg is-invalid") }}
+                    {% if form.acTwoTierCoaches.errors %}
+                        {{ form.acTwoTierCoaches(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.acTwoTierSeats.errors %}
+                            {% for error in form.acTwoTierCoaches.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.acTwoTierSeats(class="form-control form-control-lg",value = train.ac_two_tier_seats) }}
+                        {{ form.acTwoTierCoaches(class="form-control form-control-lg",value = train.ac_two_tier_coaches) }}
                     {% endif %}
                 </div>
 
                 <div class="form-group">
-                    {{ form.acThreeTierSeats.label(class="form-control-label") }}
+                    {{ form.acThreeTierCoaches.label(class="form-control-label") }}
 
-                    {% if form.acThreeTierSeats.errors %}
-                        {{ form.acThreeTierSeats(class="form-control form-control-lg is-invalid") }}
+                    {% if form.acThreeTierCoaches.errors %}
+                        {{ form.acThreeTierCoaches(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.acThreeTierSeats.errors %}
+                            {% for error in form.acThreeTierCoaches.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.acThreeTierSeats(class="form-control form-control-lg",value = train.ac_three_tier_seats) }}
+                        {{ form.acThreeTierCoaches(class="form-control form-control-lg",value = train.ac_three_tier_coaches) }}
                     {% endif %}
                 </div>
 
                 <div class="form-group">
-                    {{ form.sleeperClassSeats.label(class="form-control-label") }}
+                    {{ form.sleeperClassCoaches.label(class="form-control-label") }}
 
-                    {% if form.sleeperClassSeats.errors %}
-                        {{ form.sleeperClassSeats(class="form-control form-control-lg is-invalid") }}
+                    {% if form.sleeperClassCoaches.errors %}
+                        {{ form.sleeperClassCoaches(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.sleeperClassSeats.errors %}
+                            {% for error in form.sleeperClassCoaches.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.sleeperClassSeats(class="form-control form-control-lg",value = train.sleeper_class_seats) }}
+                        {{ form.sleeperClassCoaches(class="form-control form-control-lg",value = train.sleeper_class_coaches) }}
                     {% endif %}
                 </div>
 
@@ -217,6 +205,53 @@
                         </div>
                     {% else %}
                         {{ form.sleeperClassFare(class="form-control form-control-lg",value = train.sleeper_class_fare) }}
+                    {% endif %}
+                </div>
+
+                <legend class="border-bottom mb-4">Timings</legend>
+
+                <div class="form-group">
+                    {{ form.departure.label(class="form-control-label") }}
+
+                    {% if form.departure.errors %}
+                        {{ form.departure(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.departure.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.departure(class="form-control form-control-lg",value = train.departure) }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.arrival.label(class="form-control-label") }}
+
+                    {% if form.arrival.errors %}
+                        {{ form.arrival(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.arrival.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.arrival(class="form-control form-control-lg",value = train.arrival) }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.total.label(class="form-control-label") }}
+
+                    {% if form.total.errors %}
+                        {{ form.total(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.total.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.total(class="form-control form-control-lg",value = train.total) }}
                     {% endif %}
                 </div>
 

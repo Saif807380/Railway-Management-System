@@ -1,11 +1,13 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,DateField,IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField,IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, Required, ValidationError
 from wtforms_components import TimeField
+from wtforms.fields.html5 import DateField
 from train.models import User,Train
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from train import db
+import datetime
 
 class AddTrain(FlaskForm):
     trainName = StringField('Train Name',validators=[DataRequired()])
@@ -49,15 +51,17 @@ class UpdateTrain(FlaskForm):
     friday = BooleanField('Friday')
     saturday = BooleanField('Saturday')
     sunday = BooleanField('Sunday')
-    coaches = SelectField('Coaches',choices = [('18','18'),('20','20'),('22','22')],validators = [Required()])
-    acFirstClassSeats = StringField('AC First Class',validators=[DataRequired()])
+    acFirstClassCoaches = StringField('No. of AC First Class Coaches ',validators=[DataRequired()])
     acFirstClassFare = StringField('AC First Class Fare',validators=[DataRequired()])
-    acTwoTierSeats =  StringField('AC 2 Tier',validators=[DataRequired()])
+    acTwoTierCoaches =  StringField('No. of AC 2 Tier Coaches',validators=[DataRequired()])
     acTwoTierFare = StringField('AC 2 Tier Fare',validators=[DataRequired()])
-    acThreeTierSeats =  StringField('AC 3 Tier',validators=[DataRequired()])
+    acThreeTierCoaches =  StringField('No. of AC 3 Tier Coaches',validators=[DataRequired()])
     acThreeTierFare = StringField('AC 3 Tier Fare',validators=[DataRequired()])
-    sleeperClassSeats = StringField('Sleeper Class',validators=[DataRequired()])
+    sleeperClassCoaches = StringField('No. of Slepper Class Coaches',validators=[DataRequired()])
     sleeperClassFare = StringField('Sleeper Class Fare',validators=[DataRequired()])
+    departure = TimeField('Departure Time',validators=[DataRequired()])
+    arrival = TimeField('Arrival Time',validators=[DataRequired()])
+    total = TimeField('Total Time',validators=[DataRequired()])
     submit = SubmitField('Update Train')
 
 class RegistrationForm(FlaskForm):
@@ -124,6 +128,16 @@ def destination_station_choices():
 class BookTicket(FlaskForm):
     source = QuerySelectField('Select source station',query_factory=source_station_choices, get_label='source')  
     destination = QuerySelectField('Select destination',query_factory=destination_station_choices, get_label='destination')
-    date = StringField('Journey Start Date',validators=[DataRequired()])
+    date = DateField(
+        label='Journey Start Date',
+        format='%Y-%m-%d',
+        validators = [DataRequired('please select journey start date')]
+
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.date.data:
+            self.date.data = datetime.datetime.today()
     tier = SelectField('Tier',choices = [('1A','AC First Class'),('2A','AC 2 Tier'),('3A','AC 3 Tier'),('Sl','Sleeper')],validators = [Required()])
     submit = SubmitField('Find All Trains')

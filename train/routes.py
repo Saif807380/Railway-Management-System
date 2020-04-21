@@ -6,7 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 import datetime
 import pdfkit
 adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+config = pdfkit.configuration(wkhtmltopdf='/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
 
 @app.route('/')
 @app.route('/home')
@@ -27,6 +27,8 @@ def bookTicket():
 		print(session["date"])
 		session["tier"]=form.tier.data
 		print(session["source"],type(session["date"]))
+		print("Hello")
+		print(session["tier"])
 		return redirect(url_for('availableTrain'))
 	else:
 		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)
@@ -38,12 +40,9 @@ def availableTrain():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	print(session["source"],session["destination"])
-	year,month,day = (int(x) for x in session["date"].split('-'))
-	ans = datetime.date(year, month, day)
-	ans = ans.weekday()
-	print(ans)
-	week = {'monday':0,'tuesday':1,'wednesday':2,'thursday':3,'friday':4,'saturday':5,'sunday':6}
+	arr = session['date'].split(',')
+	ans=arr[0]
+	week = {'monday':'Mon','tuesday':'Tue','wednesday':'Wed','thursday':'Thu','friday':'Fri','saturday':'Sat','sunday':'Sun'}
 	train_class = {'1A':'ac_first_class_available_seats','2A':'ac_two_tier_available_seats','3A':'ac_three_tier_available_seats','Sl':'sleeper_class_available_seats'}
 	selected_trains = [train for train in Train.query.filter_by(source = session["source"], destination=session["destination"])]
 	if request.method=='POST':
@@ -290,10 +289,13 @@ def updateTrain(loaded):
 				train = Train(train_no = form.trainID.data,train_name = form.trainName.data,
 						source= form.starting.data,destination = form.ending.data,
 						monday=form.monday.data,tuesday=form.tuesday.data,wednesday=form.wednesday.data,thursday=form.thursday.data,
-						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_seats=form.acFirstClassSeats.data,
-						ac_two_tier_seats=form.acTwoTierSeats.data,ac_three_tier_seats=form.acThreeTierSeats.data,sleeper_class_seats=form.sleeperClassSeats.data,
+						friday=form.friday.data,saturday=form.saturday.data,sunday=form.sunday.data,ac_first_class_coaches=form.acFirstClassCoaches.data,
+						ac_two_tier_coaches=form.acTwoTierCoaches.data,ac_three_tier_coaches=form.acThreeTierCoaches.data,sleeper_class_coaches=form.sleeperClassCoaches.data,
+						ac_first_class_available_seats=24*int(form.acFirstClassCoaches.data),
+						ac_two_tier_available_seats=54*int(form.acTwoTierCoaches.data), ac_three_tier_available_seats=64*int(form.acThreeTierCoaches.data),
+						sleeper_class_available_seats=72*int(form.sleeperClassCoaches.data),
 						ac_first_class_fare=form.acFirstClassFare.data,ac_two_tier_fare=form.acTwoTierFare.data,ac_three_tier_fare=form.acThreeTierFare.data,
-						sleeper_class_fare=form.sleeperClassFare.data)
+						sleeper_class_fare=form.sleeperClassFare.data,arrival=str(form.arrival.data),departure=str(form.departure.data),total=str(form.total.data))
 				db.session.add(train)
 				db.session.commit()
 				flash('Your train has been updated', 'success')
