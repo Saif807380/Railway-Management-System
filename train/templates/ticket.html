@@ -10,7 +10,7 @@
   <p>Tier: {{ ticket.tier }}</p>
   <p>Date of Journey: {{ ticket.journey_date }}</p>
   <p>Fare: {{ ticket.fare }}</p>
-  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('download', pnr=ticket.pnr_number) }}">Print Ticket</a>
+  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('download', pnr=ticket.pnr_number) }}" target="_blank">Print Ticket</a>
   <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#cancelModal">Cancel
     Ticket</button>
 </div>

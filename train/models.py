@@ -44,7 +44,7 @@ class Ticket(db.Model):
 	destination = db.Column(db.String(20),nullable=False)
 	source = db.Column(db.String(20),nullable=False)
 	journey_date = db.Column(db.String(20),nullable=False)
-	seat_no = db.Column(db.Integer,unique=True,nullable=False)
+	seat_no = db.Column(db.Integer,nullable=False)
 	pass_id = db.Column(db.Integer,db.ForeignKey('passenger.pass_id'),nullable=False)
 	train_no = db.Column(db.Integer,db.ForeignKey('train.train_no'),nullable=False)
 	tier = db.Column(db.String(20),nullable=False)

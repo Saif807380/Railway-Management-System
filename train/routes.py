@@ -26,7 +26,7 @@ def bookTicket():
 		session["date"]=form.date.data
 		print(session["date"])
 		session["tier"]=form.tier.data
-		print(session["source"],type(session["date"]))
+		print(session["source"],type(session["tier"]))
 		print("Hello")
 		print(session["tier"])
 		return redirect(url_for('availableTrain'))
@@ -78,6 +78,18 @@ def addPassenger():
 				passenger_class = {'1A': train.ac_first_class_fare,'2A':train.ac_two_tier_fare,'3A':train.ac_three_tier_fare,'Sl':train.sleeper_class_fare}
 				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'],fare = str(passenger_class[session['tier']]))
 				db.session.add(ticket)
+				if session["tier"]=="1A":
+					train.ac_first_class_available_seats = train.ac_first_class_available_seats-1
+					print(train.ac_first_class_available_seats)
+				elif session["tier"]=="2A":
+					train.ac_two_tier_available_seats = train.ac_two_tier_available_seats-1
+					print(train.ac_two_tier_available_seats)
+				elif session["tier"]=="3A":
+					train.ac_three_tier_available_seats = train.ac_three_tier_available_seats-1
+					print(train.ac_three_tier_available_seats)
+				elif session["tier"]=="Sl":
+					train.ac_sleeper_class_available_seats = train.ac_sleeper_class_available_seats-1
+					print(train.ac_sleeper_class_available_seats)
 			db.session.commit()
 			flash('Ticket has been booked successfully', 'info')
 			return redirect(url_for('myBookings'))
@@ -124,7 +136,20 @@ def cancelTicket(pnr):
 	passenger = ticket.passenger
 	seat = SeatStatus.query.filter_by(pass_id=passenger.pass_id).first()
 	seat.pass_id=0
-	db.session.delete(ticket)
+	train = Train.query.filter_by(train_no = ticket.train_no).first()
+	if ticket.tier=="1A":
+		train.ac_first_class_available_seats = train.ac_first_class_available_seats+1
+		print(train.ac_first_class_available_seats)
+	elif ticket.tier=="2A":
+		train.ac_two_tier_available_seats = train.ac_two_tier_available_seats+1
+		print(train.ac_two_tier_available_seats)
+	elif ticket.tier=="3A":
+		train.ac_three_tier_available_seats = train.ac_three_tier_available_seats+1
+		print(train.ac_three_tier_available_seats)
+	elif ticket.tier=="Sl":
+		train.ac_sleeper_class_available_seats = train.ac_sleeper_class_available_seats+1
+		print(train.ac_sleeper_class_available_seats)
+	db.session.delete(ticket)		
 	db.session.delete(passenger)
 	db.session.commit()
 	flash('Ticket has been cancelled', 'info')
