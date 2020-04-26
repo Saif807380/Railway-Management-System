@@ -9,14 +9,16 @@
 	<link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
-	<link rel="stylesheet" href="../static/assets/fonts/fontawesome-all.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/fontawesome-all.min.css') }}">
 	<link rel="stylesheet" href="../static/assets/fonts/font-awesome.min.css">
 	<link rel="stylesheet" href="../static/assets/fonts/simple-line-icons.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	
 </head>
 
 <body>
@@ -31,9 +33,8 @@
 				<ul class="navbar-nav ml-auto">
 
 					{% if current_user.is_authenticated %}
-						
 						<li class="nav-item"><a  class="nav-link" href="{{ url_for('bookTicket') }}">Book Ticket</a></li>
-						
+
 						<li class="nav-item"><a class="nav-link" href="{{ url_for('trainStatus') }}">Train Status</a></li>
 
 						<li class="nav-item"><a class="nav-link" href="{{ url_for('fare') }}">View Fare Chart</a></li>
@@ -88,10 +89,9 @@
 				
 				{% if admin==0  and not current_user.is_authenticated %}
 				<div class="col-xl-9 mx-auto">
-					<h1 class="mb-5">WELCOME TO OUR RAILWAY BOOKING WEBSITE</h1>
-					
+					<h1 class="mb-5">WELCOME TO E-RAILWAY BOOKING MANAGEMENT SYSTEM</h1>
 				</div>
-				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+				<!--<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('register') }}">
 						<div class="form-row justify-content-center">
 							<div class="col-12 col-md-3 text-center text-sm-center text-md-center"><button
@@ -99,21 +99,20 @@
 									type="submit">Sign up!</button></div>
 						</div>
 					</form>
-				</div>
+				</div>-->
 				{% elif admin==0 and current_user.is_authenticated %}
 				<div class="col-xl-9 mx-auto">
 					<h1 class="mb-5">NOW BOOK YOUR RAILWAY TICKETS AT LIGHTENING PACE </h1>
-					
 				</div>
-				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+				<!--<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('bookTicket') }}">
 						<div class="form-row justify-content-center">
 							<div class="col-12 col-md-3 text-center text-sm-center text-md-center"><button
-									class="btn btn-primary btn-block btn-lg text-center text-sm-center 								text-md-center text-lg-center text-xl-center"type="submit">Book Ticket</button>
+									class="btn btn-primary btn-block btn-lg text-center text-sm-center text-md-center text-lg-center text-xl-center"type="submit">Book Ticket</button>
 							</div>
 						</div>
 					</form>
-				</div>
+				</div>-->
 				{% else %}
 				<div class="col-xl-9 mx-auto">
 					<h1 class="mb-5">WELCOME ADMIN,PROCEED AHEAD </h1>
@@ -136,14 +135,14 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-						<div class="d-flex features-icons-icon"><i class="fas fa-money-bill m-auto text-primary"
+						<div class="d-flex features-icons-icon"><i class="fas fa-money-bill m-auto text-primary "
 								data-bs-hover-animate="pulse"></i></div>
-						<h3>Book Ticket</h3>
-						<p class="lead mb-0">Book your journey ticket instantly</p>
+						<h3 class="animate show-on-scroll">Book Ticket</h3>
+						<p class="lead mb-0 animate show-on-scroll">Book your journey ticket instantly</p>
 					</div>
 				</div>
 				<div class="col-lg-4">
-					<div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
+					<div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3 ">
 						<div class="d-flex features-icons-icon"><i class="far fa-clock m-auto text-primary"
 								data-bs-hover-animate="pulse"></i></div>
 						<h3>Track Status</h3>
@@ -158,26 +157,15 @@
 						<p class="lead mb-0">Cancel Tickets just as easily you booked them</p>
 					</div>
 				</div>
-				<div class="col-lg-4">
-					<div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-						<div class="d-flex features-icons-icon"><i class="icon-check m-auto text-primary"
-								data-bs-hover-animate="pulse"></i></div>
-						<h3>Easy to Use</h3>
-						<p class="lead mb-0">Plan your journies easily</p>
-					</div>
-				</div>
 			</div>
 		</div>
 	</section>
-	<section class="call-to-action text-white text-center"
-		style="background:url(&quot;bg-masthead.jpg&quot;) no-repeat center center;background-size:cover;">
-		<div class="overlay"></div>
+	<section class="call-to-action text-white text-center bg-dark">
 		<div class="container">
 			<div class="row">
-				
 				{% if admin==0 and not current_user.is_authenticated  %}
 				<div class="col-xl-9 mx-auto">
-					<h2 class="mb-4">Ready to get started? Sign up now!</h2>
+					<h3 class="mb-4" style="color:white">Ready to get started? Sign up now!</h3>
 				</div>
 				<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 					<form action="{{ url_for('register') }}">
@@ -187,6 +175,18 @@
 						</div>
 					</form>
 				</div>
+				{% elif admin==1 %}
+					<div class="col-xl-9 mx-auto">
+						<h2 class="mb-4">Starting Adding Trains Now!</h2>
+					</div>
+					<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+						<form action="{{ url_for('addTrain') }}">
+							<div class="form-row justify-content-center">
+								<div class="col-12 col-md-3"><button class="btn btn-primary btn-block btn-lg"
+										type="submit">Add Train</button></div>
+							</div>
+						</form>
+					</div>
 				{% else %}
 				<div class="col-xl-9 mx-auto">
 					<h2 class="mb-4">Ready to get started? Book Ticket now!</h2>
@@ -228,9 +228,10 @@
 			</div>
 		</div>
 	</footer>
-	<script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/assets/js/bs-animation.js"></script>
+	
+	<script src="{{url_for('static', filename='/assets/js/jquery.min.js')}}"></script>
+	<script src="{{url_for('static', filename='/assets/bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static', filename='/assets/js/bs-animation.js')}}"></script>
 </body>
 
 </html>

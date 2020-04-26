@@ -4,9 +4,18 @@ from train.models import Admin, User, Train, Passenger, SeatStatus, Ticket
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 import datetime
+from datetime import time
 import pdfkit
 adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf='/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+
+def is_time_between(begin_time, end_time, check_time=None):
+    # If check time is not given, default to current UTC time
+    check_time = check_time or datetime.utcnow().time()
+    if begin_time < end_time:
+        return check_time >= begin_time and check_time <= end_time
+    else: # crosses midnight
+        return check_time >= begin_time or check_time <= end_time
 
 @app.route('/')
 @app.route('/home')
@@ -102,7 +111,31 @@ def trainStatus():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	return render_template('train_status.html',title= "Train Status",admin = adminLog)
+	current_date = datetime.datetime.now()
+	current_time = current_date.strftime("%H:%M:%S")
+	day = current_date.strftime("%A").lower()
+	trains=list()
+	final_list = list()
+	if day == 'monday':
+		trains = Train.query.filter_by(monday=1)
+	elif day == 'tuesday':
+		trains = Train.query.filter_by(tuesday=1)
+	elif day == 'wednesday':
+		trains = Train.query.filter_by(wednesday=1)
+	elif day == 'thursday':
+		trains = Train.query.filter_by(thursday=1)
+	elif day == 'friday':
+		trains = Train.query.filter_by(friday=1)
+	elif day == 'saturday':
+		trains = Train.query.filter_by(saturday=1)
+	elif day == 'sunday':
+		trains = Train.query.filter_by(sunday=1)
+	for train in trains:
+		if is_time_between(train.departure,train.arrival,str(current_time)):
+			final_list.append((train,1))
+		else:
+			final_list.append((train,0))
+	return render_template('train_status.html',title= "Train Status",admin = adminLog,trains=final_list)
 
 @app.route('/my_bookings', methods=['GET', 'POST'])
 @login_required

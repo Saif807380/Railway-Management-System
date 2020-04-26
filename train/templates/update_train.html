@@ -2,8 +2,9 @@
 {% block content %}
 <form method="POST" action="/update_train/true" class="form-inline container" >
         <div class="form-group col-lg-10 " style="margin-top: 50px;" >
+            <label style="margin-right:5px;" for="passengers" style="margin-right:5px">Search By Train No.</label>
           	<input name="train_no" type="text" class="form-control" placeholder="Search">
-          	<input type="submit" class="btn btn-default"></input>
+          	<input type="submit" class="btn btn-primary" style="margin-left:5px;"></input>
         </div>
 </form>
 
@@ -256,7 +257,7 @@
                 </div>
 
             </fieldset>
-            <div class="form-group">
+            <div class="form-group" style="text-align:center">
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

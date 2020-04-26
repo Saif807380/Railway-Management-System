@@ -2,21 +2,21 @@
 {% block content %}
 
 {% if my_bookings %}
-<div class="card">
-    <h3 style="text-align: center;">Your Bookings</h3>
+<div class="container">
+    <h1 style="text-align: center;">Your Bookings</h1>
     <hr>
     {% for ticket in my_bookings %}
 
-        <article class="media content-section">
+        <article class="content-section" style="margin-left:0">
             <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="{{ url_for('ticket', pnr=ticket.pnr_number) }}">PNR No. {{ ticket.pnr_number }}</a>
+                <div class="article-metadata" style="font-size:20px; margin-bottom:10px;">
+                    <a class="mr-2" href="{{ url_for('ticket', pnr=ticket.pnr_number) }}">PNR No.: {{ ticket.pnr_number }}</a>
                 </div>
-                <p class="article-content">Train No. {{ ticket.train_no }}</p>
-                <p class="article-content">Tier {{ ticket.tier }}</p>
-                <p class="article-content">Seat No. {{ ticket.seat_no }}</p>
-                <p class="article-content">Date of Journey {{ ticket.journey_date }}</p>
-                <p class="article-content">Fare {{ ticket.fare }}</p>
+                <p class="article-content" style="font-size:20px">Train No.: {{ ticket.train_no }}</p>
+                <p class="article-content" style="font-size:20px">Tier: {{ ticket.tier }}</p>
+                <p class="article-content" style="font-size:20px">Seat No.: {{ ticket.seat_no }}</p>
+                <p class="article-content" style="font-size:20px">Date of Journey: {{ ticket.journey_date }}</p>
+                <p class="article-content" style="font-size:20px">Fare: Rs.{{ ticket.fare }}</p>
             </div>
         </article>
 
@@ -24,11 +24,10 @@
 
 </div>
 {% else %}
-<div class="card">
-    <h5 class="card-header">No Bookings Found</h5>
-    <div class="card-body">
-        <h5 class="card-title"></h5>
-        <p class="card-text">You don't have any Bookings.</p>
+<div class="container" style="text-align:center; margin-top:5%">
+    <h1>No Bookings Found</h1>
+    <div>
+        <h4 class="card-text">You haven't made any bookings yet.</h4>
     </div>
 </div>
 {% endif %}
