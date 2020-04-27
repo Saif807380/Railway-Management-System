@@ -38,4 +38,15 @@ $ pip install -r requirements.txt
 *	Check server is running and then from your browser visit http://localhost:5000 
 
 ## Screenshots
+
 ![Book Tickets](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2017.59.41.png)
+
+![Features](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2018.02.16.png)
+
+![Fare Chart](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2018.02.25.png)
+
+![Bookings](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2018.02.33.png)
+
+![Ticket](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2017.14.13.png)
+
+![Admin Add Trains](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2018.03.27.png)
