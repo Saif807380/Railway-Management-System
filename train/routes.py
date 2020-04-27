@@ -7,7 +7,7 @@ import datetime
 from datetime import time
 import pdfkit
 adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+config = pdfkit.configuration(wkhtmltopdf='/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
 
 def is_time_between(begin_time, end_time, check_time=None):
     # If check time is not given, default to current UTC time
@@ -253,7 +253,9 @@ def logout():
 	logout_user()
 	return redirect(url_for('home'))
 
-
+@app.route('/about_us', methods=['GET', 'POST'])
+def aboutUs():
+	return render_template('about_us.html')
 
 
 @app.route('/add_train',methods=['GET', 'POST'])
