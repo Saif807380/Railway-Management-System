@@ -7,7 +7,7 @@ import datetime
 from datetime import time
 import pdfkit
 adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf='/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 def is_time_between(begin_time, end_time, check_time=None):
     # If check time is not given, default to current UTC time
