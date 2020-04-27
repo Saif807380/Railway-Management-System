@@ -1,18 +1,39 @@
 # Railway-Management-System
-A web portal for railway ticket booking as well as for managing the train system
+E-Railway Management System is the cumulation of all aspects related to train journey. Right from easy ticket booking over the internet, which avoids long queues, tracking the booking status, the train status, schedules to checking out nearby tourist attractions, this service covers it all. The website solves multiple issues for users such no waiting in queues for booking tickets, anywhere-anytime access to transactions and bookings, and easy process for booking and checking availability and train status.
+
+On the other hand, E-Railway Management System provides and easy and efficient way for railway authorities to manage the train schedules and routes. Not only can the railway authorities update the schedules of the trains, they can also add new trains to the system. This allows the authorities to have centralized portal for management. Also, they can update the seat status of any of the classes of the train and regulate the fare prices to suit their needs.
+
 
 ## Setup
 
-For MacOS
+* Clone the repository
 ```bash
- $ brew install wkhtmltopdf
+$ git clone https://github.com/Saif807380/Railway-Management-System
 ```
-For Linux
+* Create a virtual environment and install all dependencies from the requirements.txt file
 ```bash
-$ cd ~
-$ wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
-$ tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz 
-$ cp wkhtmltox/bin/wk* /usr/local/bin/
+$ virtualenve your_env
+$ source your_env/bin/activate
+$ pip install -r requirements.txt
 ```
-For Windows
-Download wkhtmltopdf from [here](https://wkhtmltopdf.org/downloads.html)
+* Install wkhtmltopdf
+wkhtmltopdf is command line tool to render HTML into PDF using the Qt WebKit rendering engine.
+ * For MacOS
+ ```bash
+  $ brew install wkhtmltopdf
+ ```
+ * For Linux
+ ```bash
+ $ cd ~
+ $ wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
+ $ tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz 
+ $ cp wkhtmltox/bin/wk* /usr/local/bin/
+ ```
+ * For Windows
+ Download wkhtmltopdf from [here](https://wkhtmltopdf.org/downloads.html)
+
+* Set the path of wkhtmltopdf in the config variable in routes.py
+
+*	From the command line, go to the project folder and execute run.py.
+
+*	Check server is running and then from your browser visit http://localhost:5000 
