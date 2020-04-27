@@ -36,3 +36,6 @@ $ pip install -r requirements.txt
 *	From the command line, go to the project folder and execute run.py.
 
 *	Check server is running and then from your browser visit http://localhost:5000 
+
+## Screenshots
+![Book Tickets](https://github.com/Saif807380/Railway-Management-System/blob/master/Images/Screenshot%202020-04-27%20at%2017.59.41.png)
