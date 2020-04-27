@@ -16,8 +16,7 @@ $ virtualenve your_env
 $ source your_env/bin/activate
 $ pip install -r requirements.txt
 ```
-* Install wkhtmltopdf
-wkhtmltopdf is command line tool to render HTML into PDF using the Qt WebKit rendering engine.
+* Install wkhtmltopdf, a command line tool to render HTML into PDF using the Qt WebKit rendering engine, required by pdfkit.
  * For MacOS
  ```bash
   $ brew install wkhtmltopdf
