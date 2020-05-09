@@ -6,7 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 import datetime
 from datetime import time
 import pdfkit
-adminLog = 0    #To check if admin is logged in or not
+# adminLog = 0    #To check if admin is logged in or not
 config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 def is_time_between(begin_time, end_time, check_time=None):
@@ -20,36 +20,41 @@ def is_time_between(begin_time, end_time, check_time=None):
 @app.route('/')
 @app.route('/home')
 def home():
-	return render_template('index.html',admin = adminLog)
+	return render_template('index.html',admin = session["adminLog"])
 
 @app.route('/book_ticket',methods=['GET','POST'])
 @login_required
 def bookTicket():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	form =BookTicket()
 	if request.method=='POST':
 		session["source"] = (form.source.data).source
 		session["destination"]=(form.destination.data).destination
 		session["date"]=form.date.data
+		print(type(session["date"]))
 		print(session["date"])
 		session["tier"]=form.tier.data
 		print(session["source"],type(session["tier"]))
 		print("Hello")
 		print(session["tier"])
-		return redirect(url_for('availableTrain'))
+		if(session["date"]< datetime.date.today()):
+			flash('Please select a proper date', 'danger')
+			return redirect(url_for('bookTicket'))
+		else:
+			return redirect(url_for('availableTrain'))
 	else:
-		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = adminLog)
+		return render_template('book_ticket.html', title= "Book Ticket", form=form,admin = session["adminLog"])
 
 
 @app.route('/book_ticket/available_train',methods=['GET','POST'])
 @login_required
 def availableTrain():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	arr = session['date'].split(',')
+	print(arr[1][13:])
 	ans=arr[0]
 	week = {'monday':'Mon','tuesday':'Tue','wednesday':'Wed','thursday':'Thu','friday':'Fri','saturday':'Sat','sunday':'Sun'}
 	train_class = {'1A':'ac_first_class_available_seats','2A':'ac_two_tier_available_seats','3A':'ac_three_tier_available_seats','Sl':'sleeper_class_available_seats'}
@@ -64,13 +69,13 @@ def availableTrain():
 @app.route('/book_ticket/add_passengers', methods=['GET','POST'])
 @login_required
 def addPassenger():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	if request.method == "POST":
 		if 'passengers' in request.form:
 			session["passengers"] = int(request.form["passengers"])
-			return render_template('add_passengers.html',title="Add Passengers",passengers=session["passengers"],admin = adminLog,loaded=True)
+			return render_template('add_passengers.html',title="Add Passengers",passengers=session["passengers"],admin = session["adminLog"],loaded=True)
 		elif 'addp' in request.form:		
 			form = request.form	
 			print(session['source'],session['destination'])
@@ -85,7 +90,9 @@ def addPassenger():
 				seat.pass_id= passenger.pass_id	
 				train = Train.query.filter_by(train_no = session['train_no']).first()
 				passenger_class = {'1A': train.ac_first_class_fare,'2A':train.ac_two_tier_fare,'3A':train.ac_three_tier_fare,'Sl':train.sleeper_class_fare}
-				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=session['date'], seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'],fare = str(passenger_class[session['tier']]))
+				print(session["date"],type(session["date"]))
+				journey_date = session['date'].split(',')[1][:13] + train.departure + " IST"
+				ticket = Ticket(pnr_number = pnr_no,user_id=current_user.id, source=session['source'], destination=session['destination'], journey_date=journey_date, seat_no=seat_no, pass_id=passenger.pass_id, train_no=session['train_no'], tier=session['tier'],fare = str(passenger_class[session['tier']]))
 				db.session.add(ticket)
 				if session["tier"]=="1A":
 					train.ac_first_class_available_seats = train.ac_first_class_available_seats-1
@@ -97,20 +104,20 @@ def addPassenger():
 					train.ac_three_tier_available_seats = train.ac_three_tier_available_seats-1
 					print(train.ac_three_tier_available_seats)
 				elif session["tier"]=="Sl":
-					train.ac_sleeper_class_available_seats = train.ac_sleeper_class_available_seats-1
-					print(train.ac_sleeper_class_available_seats)
+					train.sleeper_class_available_seats = train.sleeper_class_available_seats-1
+					print(train.sleeper_class_available_seats)
 			db.session.commit()
 			flash('Ticket has been booked successfully', 'info')
 			return redirect(url_for('myBookings'))
-	return render_template('add_passengers.html',title="Add Passengers",passengers=0,admin = adminLog,loaded=False)
+	return render_template('add_passengers.html',title="Add Passengers",passengers=0,admin = session["adminLog"],loaded=False)
 
 
 @app.route('/train_status')
 @login_required
 def trainStatus():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	current_date = datetime.datetime.now()
 	current_time = current_date.strftime("%H:%M:%S")
 	day = current_date.strftime("%A").lower()
@@ -135,14 +142,14 @@ def trainStatus():
 			final_list.append((train,1))
 		else:
 			final_list.append((train,0))
-	return render_template('train_status.html',title= "Train Status",admin = adminLog,trains=final_list)
+	return render_template('train_status.html',title= "Train Status",admin = session["adminLog"],trains=final_list)
 
 @app.route('/my_bookings', methods=['GET', 'POST'])
 @login_required
 def myBookings():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	my_bookings = [ticket for ticket in reversed(Ticket.query.filter_by(user_id = current_user.id).all())]
 	return render_template('my_bookings.html',title= "My Bookings",my_bookings=my_bookings)
 
@@ -180,8 +187,8 @@ def cancelTicket(pnr):
 		train.ac_three_tier_available_seats = train.ac_three_tier_available_seats+1
 		print(train.ac_three_tier_available_seats)
 	elif ticket.tier=="Sl":
-		train.ac_sleeper_class_available_seats = train.ac_sleeper_class_available_seats+1
-		print(train.ac_sleeper_class_available_seats)
+		train.sleeper_class_available_seats = train.sleeper_class_available_seats+1
+		print(train.sleeper_class_available_seats)
 	db.session.delete(ticket)		
 	db.session.delete(passenger)
 	db.session.commit()
@@ -193,7 +200,7 @@ def cancelTicket(pnr):
 def fare():
 		trains = Train.query.all()
 		if len(trains) > 0:
-			return render_template('fare.html',title= "Fare Chart",trains= trains,admin = adminLog)
+			return render_template('fare.html',title= "Fare Chart",trains= trains,admin = session["adminLog"])
 		else:
 			return "no trains found"
 	
@@ -201,9 +208,9 @@ def fare():
 @app.route('/account' , methods=['GET', 'POST'])
 @login_required
 def account():
-	global adminLog
-	if adminLog == 1:
-		adminLog = 0
+	
+	if session["adminLog"] == 1:
+		session["adminLog"] = 0
 	form = UpdateAccountForm()
 	if form.validate_on_submit():
 		current_user.username = form.username.data
@@ -214,11 +221,12 @@ def account():
 	elif request.method == 'GET':
 		form.username.data = current_user.username
 		form.email.data = current_user.email
-	return render_template('account.html' , title = "Account" , admin = adminLog , form = form)
+	return render_template('account.html' , title = "Account" , admin = session["adminLog"] , form = form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:
+		session["adminLog"] = 0
 		return redirect(url_for('home'))
 	form =RegistrationForm()
 	if form.validate_on_submit():
@@ -227,12 +235,14 @@ def register():
 		db.session.add(user)
 		db.session.commit()
 		flash('Your account has been created', 'success')
+		session["adminLog"] = 0
 		return redirect(url_for('login'))
 	return render_template('register.html', title= "Register", form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if current_user.is_authenticated:
+		session["adminLog"] = 0
 		return redirect(url_for('home'))
 	form =LoginForm()
 	if form.validate_on_submit():
@@ -241,8 +251,10 @@ def login():
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
 			if next_page:
+				session["adminLog"] = 0
 				return redirect(next_page)
 			else:
+				session["adminLog"] = 0
 				return redirect(url_for('home'))
 		else:
 			flash('Login Unsuccessful! Please check email & Password', 'danger')
@@ -260,7 +272,7 @@ def aboutUs():
 
 @app.route('/add_train',methods=['GET', 'POST'])
 def addTrain():
-	if adminLog == 1:
+	if session["adminLog"] == 1:
 		form = AddTrain()
 		if form.validate_on_submit():
 			print("Yes")
@@ -307,7 +319,7 @@ def addTrain():
 
 			flash('Your train has been added', 'success')
 			return redirect(url_for('view'))
-		return render_template('add_train.html',title="Add Train",form = form,admin = adminLog)
+		return render_template('add_train.html',title="Add Train",form = form,admin = session["adminLog"])
 	else:
 		if current_user.is_authenticated:
 			return redirect(url_for('home'))
@@ -318,10 +330,10 @@ def addTrain():
 
 @app.route('/update_train',methods=['GET', 'POST'])
 def update():
-	if adminLog == 1:
+	if session["adminLog"] == 1:
 		form = UpdateTrain()
 		train = ""
-		return render_template('update_train.html',title="Update Train",form = form,train=train,admin = adminLog)
+		return render_template('update_train.html',title="Update Train",form = form,train=train,admin = session["adminLog"])
 	else:
 		if current_user.is_authenticated:
 			return redirect(url_for('home'))
@@ -334,7 +346,7 @@ train = ""
 
 @app.route('/update_train/<loaded>',methods=['GET', 'POST'])
 def updateTrain(loaded):
-	if adminLog ==1:
+	if session["adminLog"] ==1:
 		global train
 		form = UpdateTrain()
 		try:
@@ -360,7 +372,7 @@ def updateTrain(loaded):
 				db.session.commit()
 				flash('Your train has been updated', 'success')
 				return redirect(url_for('view'))
-		return render_template('update_train.html',title="Update Train",loaded=loaded, form = form, train=train,admin = adminLog)
+		return render_template('update_train.html',title="Update Train",loaded=loaded, form = form, train=train,admin = session["adminLog"])
 	else:
 		if current_user.is_authenticated:
 			return redirect(url_for('home'))
@@ -371,10 +383,10 @@ def updateTrain(loaded):
 
 @app.route('/view')
 def view():
-	if adminLog == 1:
+	if session["adminLog"] == 1:
 		trains = Train.query.all()
 		if len(trains) > 0:
-			return render_template('view_train.html',title= "View Trains",trains= trains,admin = adminLog)
+			return render_template('view_train.html',title= "View Trains",trains= trains,admin = session["adminLog"])
 		else:
 			return "no trains found"
 	else:
@@ -395,8 +407,8 @@ def adminLogin():
 		admin = Admin.query.filter_by(email=form.email.data).first()
 		if admin and bcrypt.check_password_hash(admin.password, form.password.data):
 			next_page = request.args.get('next')
-			global adminLog
-			adminLog = 1				#admin is logged in
+			
+			session["adminLog"] = 1				#admin is logged in
 			if next_page:
 				return redirect(next_page)
 			else:
@@ -407,6 +419,5 @@ def adminLogin():
 
 @app.route('/admin_logout')
 def adminLogout():
-	global adminLog
-	adminLog = 0
+	session["adminLog"] = 0
 	return redirect(url_for('home'))
