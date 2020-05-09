@@ -143,7 +143,7 @@ def myBookings():
 	global adminLog
 	if adminLog == 1:
 		adminLog = 0
-	my_bookings = [ticket for ticket in Ticket.query.filter_by(user_id = current_user.id)]
+	my_bookings = [ticket for ticket in reversed(Ticket.query.filter_by(user_id = current_user.id).all())]
 	return render_template('my_bookings.html',title= "My Bookings",my_bookings=my_bookings)
 
 @app.route("/ticket/<string:pnr>")
