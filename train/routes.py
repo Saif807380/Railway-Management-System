@@ -20,7 +20,8 @@ def is_time_between(begin_time, end_time, check_time=None):
 
 @app.route('/home')
 def home():
-	session["adminLog"] = 0
+	if session["adminLog"]==1:
+		session["adminLog"] = 0
 	return render_template('index.html',admin = session["adminLog"])
 
 @app.route('/book_ticket',methods=['GET','POST'])
