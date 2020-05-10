@@ -17,7 +17,7 @@ def is_time_between(begin_time, end_time, check_time=None):
     else: # crosses midnight
         return check_time >= begin_time or check_time <= end_time
 
-@app.route('/')
+
 @app.route('/home')
 def home():
 	return render_template('index.html',admin = session["adminLog"])
@@ -222,7 +222,8 @@ def account():
 		form.username.data = current_user.username
 		form.email.data = current_user.email
 	return render_template('account.html' , title = "Account" , admin = session["adminLog"] , form = form)
-
+	
+@app.route('/')
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:
