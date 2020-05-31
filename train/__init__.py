@@ -13,3 +13,6 @@ user_login_manager.login_view = 'login'
 user_login_manager.login_message_category = 'info'
 
 from train import routes
+
+def getApp():
+    return app
