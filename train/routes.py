@@ -8,7 +8,7 @@ import os
 from datetime import time
 import pdfkit
 # adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf=os.environ.get("WKHTMLTOPDF_PATH"))
+#config = pdfkit.configuration(wkhtmltopdf=os.environ.get("WKHTMLTOPDF_PATH"))
 
 def is_time_between(begin_time, end_time, check_time=None):
     # If check time is not given, default to current UTC time
@@ -166,7 +166,7 @@ def ticket(pnr):
 def download(pnr):
 	ticket = Ticket.query.get(pnr)
 	rendered = render_template('pdf_template.html',ticket = ticket,passenger = ticket.passenger)
-	pdf = pdfkit.from_string(rendered,False,configuration=config)
+	pdf = pdfkit.from_string(rendered,False)
 	response = make_response(pdf)
 	response.headers['Content-type'] = 'application/pdf'
 	response.headers['Content-Disposition'] = 'inline; filename='+str(pnr)+'.pdf'
