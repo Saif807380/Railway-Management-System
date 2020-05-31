@@ -4,10 +4,11 @@ from train.models import Admin, User, Train, Passenger, SeatStatus, Ticket
 from train.forms import AddTrain, UpdateTrain, RegistrationForm, LoginForm, AdminLoginForm ,CancelBookingForm ,BookTicket , UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 import datetime
+import os
 from datetime import time
 import pdfkit
 # adminLog = 0    #To check if admin is logged in or not
-config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+config = pdfkit.configuration(wkhtmltopdf=os.environ.get("WKHTMLTOPDF_PATH"))
 
 def is_time_between(begin_time, end_time, check_time=None):
     # If check time is not given, default to current UTC time
