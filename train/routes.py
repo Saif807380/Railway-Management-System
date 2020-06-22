@@ -6,9 +6,26 @@ from flask_login import login_user, current_user, logout_user, login_required
 import datetime
 import os
 from datetime import time
+import sys
+import subprocess
+import platform
 import pdfkit
 # adminLog = 0    #To check if admin is logged in or not
-#config = pdfkit.configuration(wkhtmltopdf=os.environ.get("WKHTMLTOPDF_PATH"))
+
+def _get_pdfkit_config():
+     """wkhtmltopdf lives and functions differently depending on Windows or Linux. We
+      need to support both since we develop on windows but deploy on Heroku.
+
+     Returns:
+         A pdfkit configuration
+     """
+     if platform.system() == 'Windows':
+        return pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
+     else:
+        WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')], stdout=subprocess.PIPE).communicate()[0].strip()
+        return pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+
+config = _get_pdfkit_config()
 
 def is_time_between(begin_time, end_time, check_time=None):
     # If check time is not given, default to current UTC time
@@ -164,7 +181,7 @@ def ticket(pnr):
 def download(pnr):
 	ticket = Ticket.query.get(pnr)
 	rendered = render_template('pdf_template.html',ticket = ticket,passenger = ticket.passenger)
-	pdf = pdfkit.from_string(rendered,False)
+	pdf = pdfkit.from_string(rendered,False,configuration=config)
 	response = make_response(pdf)
 	response.headers['Content-type'] = 'application/pdf'
 	response.headers['Content-Disposition'] = 'inline; filename='+str(pnr)+'.pdf'
